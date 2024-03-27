@@ -13,4 +13,7 @@
         }
         return $text;
     }
+    function passwordsMatch($password, $confirmPassword) {
+        return $password === $confirmPassword;
+    }
 ?>
