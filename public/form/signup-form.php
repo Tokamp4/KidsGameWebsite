@@ -65,6 +65,9 @@
             <div style="font-size: 20px; margin: 10px; color: black;">Sign up</div>
             <input class="text" type="text" name="user_name" placeholder="Username">
             <input class="text" type="password" name="password" placeholder="Password">
+            <input class="text" type="password" name="confirm_password" placeholder="Confirm Password">
+            <input class="text" type="text" name="first_name" placeholder="First Name">
+            <input class="text" type="text" name="last_name" placeholder="Last Name">
             <input id="button" type="submit" value="Sign up">
             <br></br>
             <a href="login.php">Click to Login</a><br><br>
@@ -72,28 +75,32 @@
     </div>
 
     <?php
-    session_start();
+        session_start();
         include("connection.php");
         include("functions.php");
-        
-        if($_SERVER['REQUEST_METHOD'] == "POST")
-        {
+
+        if($_SERVER['REQUEST_METHOD'] == "POST") {
             $user_name = $_POST['user_name'];
             $password = $_POST['password'];
+            $confirm_password = $_POST['confirm_password'];
+            $first_name = $_POST['first_name'];
+            $last_name = $_POST['last_name'];
 
-            if(!empty($user_name) && !empty($password) && !is_numeric($user_name)){
-                $user_id = random_num(100)
-                $query = "insert into users (user_id,user_name,password) values ('$user_id','$user_name','$password')"; 
+            if(!empty($user_name) && !empty($password) && !empty($first_name) && !empty($last_name) && passwordsMatch($password, $confirm_password) && !is_numeric($user_name)) {
+                $user_id = random_num(20);
+                $query = "insert into users (user_id, user_name, password, first_name, last_name) values ('$user_id', '$user_name', '$password', '$first_name', '$last_name')"; 
 
                 mysqli_query($con, $query);
 
                 header("Location: login.php");
                 die;
+            } else {
+                if(!passwordsMatch($password, $confirm_password)) {
+                    echo "Passwords do not match. Please try again!";
+                } else {
+                    echo "Unvalid insert. Please try again!";
+                }
             }
-            else{
-                echo "Unvalid user name or password. Please try again!"
-            }
-
         }
     ?>
 
