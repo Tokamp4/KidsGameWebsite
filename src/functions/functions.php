@@ -16,4 +16,16 @@
     function passwordsMatch($password, $confirmPassword) {
         return $password === $confirmPassword;
     }
+    function isPasswordStrong($password) {
+        if (strlen($password) < 6) {
+            return "Password must be at least 6 characters long.";
+        }
+        if (!preg_match('@[A-Z]@', $password)) {
+            return "Password must include at least one uppercase letter.";
+        }
+        if (!preg_match('@[^\w]@', $password)) {
+            return "Password must contain at least one special character.";
+        }
+        return "";
+    }
 ?>
