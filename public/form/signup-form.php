@@ -85,26 +85,21 @@
             $userName = $_POST['user_name'];
             $password = $_POST['password'];
             $confirm_password = $_POST['confirm_password'];
-
+        
+            $passwordStrengthMessage = isPasswordStrong($password);
+        
             if (!empty($userName) && !empty($password) && !empty($fName) && !empty($lName) && passwordsMatch($password, $confirm_password)) {
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-                $insertPlayerQuery = "INSERT INTO player (fName, lName, userName, registrationTime) VALUES ('$fName', '$lName', '$userName', NOW())";
-                $result = mysqli_query($con, $insertPlayerQuery);
-
-                if ($result) {
-                    $registrationOrder = mysqli_insert_id($con);
-
-                    $insertAuthQuery = "INSERT INTO authenticator (passCode, registrationOrder) VALUES ('$hashedPassword', '$registrationOrder')";
-                    mysqli_query($con, $insertAuthQuery);
-
-                    header("Location: login.php");
-                    exit();
+                if ($passwordStrengthMessage === "") {
+                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 } else {
-                    echo "Failed to register. Please try again.";
+                    echo $passwordStrengthMessage;
                 }
             } else {
-                echo "Invalid input or passwords do not match. Please try again.";
+                if (!passwordsMatch($password, $confirm_password)) {
+                    echo "Passwords do not match. Please try again!";
+                } else {
+                    echo "Unvalid insert. Please try again!";
+                }
             }
         }
     ?>
