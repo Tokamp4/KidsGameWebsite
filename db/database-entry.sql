@@ -73,3 +73,5 @@ VALUES(now(), 'gameover', 6, 2);
 
 INSERT INTO score(scoreTime, result , livesUsed, registrationOrder)
 VALUES(now(), 'incomplete', 5, 3);
+
+COMMIT;
