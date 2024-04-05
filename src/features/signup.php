@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,8 +77,8 @@
 
     <?php
         session_start();
-        require "connection.php";
-        require "functions.php";
+        include("../functions/connection-functions.php");
+        include("../functions/functions.php");
 
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $fName = $_POST['first_name']; 

@@ -1,13 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+<?php
+include("config.php");
+display_header();
+display_navigation_menu();
+?>
 <body>
+    <section>
+        <h2>Featured Games</h2>
+        <div>
+            <h3>Sign up</h3>
+            <button>
+                <a href="src/features/signup.php">Sign up</a>
+            </button>
+        </div>
+        <div>
+            <h3>Sign in</h3>
+            <button>
+                <a href="src/features/signin.php" >Sign in</a>
+            </button>
+        </div>
+    </section>
     <?php
-        echo "hello guys this is a test"
+    display_footer();
     ?>
 </body>
 </html>
