@@ -1,5 +1,6 @@
 <?php
 include("config.php");
+create_database();
 display_header();
 display_navigation_menu();
 ?>
