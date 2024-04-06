@@ -1,8 +1,70 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    session_start();
+    
+    require_once "../functions/connection-functions.php";
+    require_once "../functions/functions.php";
+
+    $response = ['success' => false, 'message' => ''];
+
+    $userName = $_POST['user_name'] ?? '';
+    $password = $_POST['password'] ?? '';
+    $confirmPassword = $_POST['confirm_password'] ?? '';
+    $fName = $_POST['first_name'] ?? '';
+    $lName = $_POST['last_name'] ?? '';
+
+    if (empty($userName) || empty($password) || empty($fName) || empty($lName)) {
+        $response['message'] = 'Please fill in all fields.';
+    } elseif ($password !== $confirmPassword) {
+        $response['message'] = 'Passwords do not match.';
+    } elseif ($passwordMessage = isPasswordStrong($password)) {
+        $response['message'] = $passwordMessage;
+    } else {
+        $response = ['success' => true, 'message' => 'Registration successful!'];
+    }
+
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit;
+}
+?>
+
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Registration</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("form").submit(function(event) {
+                event.preventDefault();
+                var formData = {
+                    'user_name': $('input[name=user_name]').val(),
+                    'password': $('input[name=password]').val(),
+                    'confirm_password': $('input[name=confirm_password]').val(),
+                    'first_name': $('input[name=first_name]').val(),
+                    'last_name': $('input[name=last_name]').val()
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "signup.php", // URL is this file itself
+                    data: formData,
+                    dataType: "json", 
+                })
+                .done(functioSn(data) {
+                    $('#responseMessage').html(data.message);
+                    if(data.success) {
+                        $('form').trigger("reset");
+                    }
+                })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                    $('#responseMessage').html("AJAX request failed: " + textStatus + ", " + errorThrown);
+                });
+            });
+        });
+    </script>
     <style type="text/css">
         body {
             font-family: Arial, sans-serif;
@@ -70,41 +132,14 @@
             <input class="text" type="text" name="first_name" placeholder="First Name">
             <input class="text" type="text" name="last_name" placeholder="Last Name">
             <input id="button" type="submit" value="Sign up">
-            <br></br>
+            <br><br>
             <a href="login.php">Click to Login</a><br><br>
         </form>
+        <div id="responseMessage" style="margin-top: 20px;"></div>
     </div>
-
-    <?php
-        session_start();
-        include("../functions/connection-functions.php");
-        include("../functions/functions.php");
-
-        if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $fName = $_POST['first_name']; 
-            $lName = $_POST['last_name']; 
-            $userName = $_POST['user_name'];
-            $password = $_POST['password'];
-            $confirm_password = $_POST['confirm_password'];
-        
-            $passwordStrengthMessage = isPasswordStrong($password);
-        
-            if (!empty($userName) && !empty($password) && !empty($fName) && !empty($lName) && passwordsMatch($password, $confirm_password)) {
-                if ($passwordStrengthMessage === "") {
-                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                } else {
-                    echo $passwordStrengthMessage;
-                }
-            } else {
-                if (!passwordsMatch($password, $confirm_password)) {
-                    echo "Passwords do not match. Please try again!";
-                } else {
-                    echo "Unvalid insert. Please try again!";
-                }
-            }
-        }
-    ?>
-
 </body>
 </html>
+
+
+
 
