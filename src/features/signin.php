@@ -5,19 +5,11 @@ session_start();
 
 
 
-// Database connection 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "kidsGames";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $database);
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+
+//Connection
+include 'database.php';
 
 // Authenticate user
 function authenticateUser($username, $password, $conn) {
@@ -45,7 +37,7 @@ function logout() {
 
 // Function to handle timeout
 function checkTimeout() {
-    if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 900)) { 
+    if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 900)) {  //15 minutes
         logout();
     } else {
         $_SESSION['last_activity'] = time(); // Update last activity time
