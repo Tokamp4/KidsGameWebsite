@@ -55,7 +55,7 @@
                   ?>
                   </div>
 
-                    <form method="POST" action="register_check.php">
+                    <form method="POST" action="src/features/signup.php">
                      <div class="form-group">
                         <label for="name">Name:</label>
                         <input type="text" class="form-control" id="name" placeholder="Name" name="name">
@@ -99,7 +99,7 @@
                       </div>
                    
                       <br>
-                      <input type="submit"  value="Submit" class="btn btn-default">
+                      <input type="submit"  value="Submit" class="">
                     </form>
                 </div>
             </div>

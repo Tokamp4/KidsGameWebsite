@@ -43,7 +43,7 @@
         </div>
 
         <div class="wraper">
-          <form method="post" action="check_login.php">
+          <form method="post" action="src/features/signup.php">
             <div class="form-group">
               <label for="exampleInputEmail1">Email address</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" name="email">
