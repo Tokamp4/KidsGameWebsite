@@ -1,4 +1,8 @@
-<?php include ("common.php");?> 
+<?php 
+include ("common.php");
+include ("db/Create.php");
+//create_database();
+?> 
 
 <!DOCTYPE html>
 <html lang="en">

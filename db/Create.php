@@ -46,7 +46,6 @@ function create_database(){
     foreach ($tablesAndViewsSql as $sql) {
         $conn->query($sql);
     }
-    
     $conn->close();
     
 }

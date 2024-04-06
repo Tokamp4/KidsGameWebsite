@@ -26,21 +26,65 @@
     </div>
     <div class="container padding-top">
         <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-                <div class="flash-info">
-                    <!-- Display any flash messages here -->
-                </div>
-                <div class="wrapper">
-                    <form method="post" action="src/features//signin.php">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" name="username">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password">
-                        </div>
-                        <button type="submit" class="btn btn-default" name="login">Submit</button>
+            <div class="col-md-6 col-md-offset-3 ">
+
+                <div class="wraper">
+                  <div class="er">
+                  <?php
+                //   if(isset($_SESSION['er'])) {
+                //    echo $_SESSION['er'].'<br>';
+                //     unset($_SESSION['er']);
+                //     echo $_SESSION['dev_error'];
+                //   }
+                  
+                  ?>
+                  </div>
+
+                    <form method="POST" action="register_check.php">
+                     <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" id="name" placeholder="Name" name="name">
+                        <?php
+                        // if(isset($_SESSION['error_name'])){
+                        //   echo '<div class="display-error">'.$_SESSION['error_name'].'</div>';
+                        //   unset($_SESSION['error_name']);
+                        // }
+
+                        ?>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input  class="form-control" id="exampleInputEmail1" placeholder="Email" name="email">
+                        <?php
+                        // if(isset($_SESSION['email_error'])){
+                        //   echo '<div class="display-error">'.$_SESSION['email_error'].'</div>';
+                        //   unset($_SESSION['email_error']);
+                        // }
+                        ?>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password" name="password">
+                        <?php
+                        // if(isset($_SESSION['password_error'])){
+                        //   echo '<div class="display-error">'.$_SESSION['password_error'].'</div>';
+                        //   unset($_SESSION['password_error']);
+                        // }
+                        ?>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Repeat Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="repeat_password">
+                        <?php
+                        // if(isset($_SESSION['password_error'])){
+                        //   echo '<div class="display-error">'.$_SESSION['password_error'].'</div>';
+                        //   unset($_SESSION['password_error']);
+                        // }
+                        ?>
+                      </div>
+                   
+                      <br>
+                      <input type="submit"  value="Submit" class="btn btn-default">
                     </form>
                 </div>
                 <div class="display-error">
