@@ -18,6 +18,7 @@
     </form>
     <?php
     // Check if form is submitted
+    
     if(isset($_POST['submit'])){
         // Correct answer
         $correct_answer = 'C';

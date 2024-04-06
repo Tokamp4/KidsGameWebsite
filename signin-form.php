@@ -45,8 +45,8 @@
         <div class="wraper">
           <form method="post" action="src/features/signup.php">
             <div class="form-group">
-              <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" name="email">
+              <label for="username">Email address</label>
+                <input type="text" class="form-control" id="username" placeholder="Email" name="email">
             </div>
             <div class="form-group">
               <label for="exampleInputPassword1">Password</label>
