@@ -2,6 +2,9 @@
 <?php
 session_start();
 
+
+
+
 // Database connection 
 $servername = "localhost";
 $username = "root";
