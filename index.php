@@ -1,7 +1,7 @@
 <?php 
 include ("common.php");
 include ("db/Create.php");
-//create_database();
+create_database();
 ?> 
 
 <!DOCTYPE html>
