@@ -47,10 +47,6 @@ function generateIndexHeader2() {
 
 
         </script>
-        <script src="public/assets/js/menu.js"></script>
-    
-    </body>
-
-    </html>';
+        <script src="public/assets/js/menu.js"></script>';
 }
 ?>
