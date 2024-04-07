@@ -94,7 +94,7 @@ function create_database(){
         $conn->query($sql);
     }
 
-    // Check if the view exists before creating it
+    // Check if the view exists before creating 
     $viewCheck = $conn->query("SHOW TABLES LIKE 'history'");
     if ($viewCheck->num_rows == 0) {
         $conn->query("CREATE VIEW history AS
