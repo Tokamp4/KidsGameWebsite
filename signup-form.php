@@ -31,19 +31,18 @@
                 <div class="wraper">
                   <div class="er">
                   <?php
-                //   if(isset($_SESSION['er'])) {
-                //    echo $_SESSION['er'].'<br>';
-                //     unset($_SESSION['er']);
-                //     echo $_SESSION['dev_error'];
-                //   }
-                  
+                  // if(isset($_SESSION['er'])) {
+                  //   echo $_SESSION['er'].'<br>';
+                  //     unset($_SESSION['er']);
+                  //     echo $_SESSION['dev_error'];
+                  //   }
                   ?>
                   </div>
 
                     <form method="POST" action="src/features/signupT.php">
                      <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input type="text" class="form-control" id="name" placeholder="Name" name="name">
+                        <label for="firstName">First Name:</label>
+                        <input type="text" class="form-control" id="firstName" placeholder="First Name" name="firstName">
                         <?php
                         // if(isset($_SESSION['error_name'])){
                         //   echo '<div class="display-error">'.$_SESSION['error_name'].'</div>';
@@ -53,17 +52,29 @@
                         ?>
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input  class="form-control" id="exampleInputEmail1" placeholder="Email" name="email">
+                        <label for="lastName">Last Name:</label>
+                        <input type="text" class="form-control" id="lastName" placeholder="Last Name" name="lastName">
                         <?php
-                        // if(isset($_SESSION['email_error'])){
-                        //   echo '<div class="display-error">'.$_SESSION['email_error'].'</div>';
-                        //   unset($_SESSION['email_error']);
+                        // if(isset($_SESSION['error_name'])){
+                        //   echo '<div class="display-error">'.$_SESSION['error_name'].'</div>';
+                        //   unset($_SESSION['error_name']);
                         // }
+
                         ?>
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputPassword">Password</label>
+                        <label for="username">Username:</label>
+                        <input type="text" class="form-control" id="username" placeholder="Username" name="username">
+                        <?php
+                        // if(isset($_SESSION['error_name'])){
+                        //   echo '<div class="display-error">'.$_SESSION['error_name'].'</div>';
+                        //   unset($_SESSION['error_name']);
+                        // }
+
+                        ?>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword">Password:</label>
                         <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password" name="password">
                         <?php
                         // if(isset($_SESSION['password_error'])){
@@ -73,8 +84,8 @@
                         ?>
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputPassword1">Repeat Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="repeat_password">
+                        <label for="repeatPassword">Repeat Password:</label>
+                        <input type="password" class="form-control" id="repeatPassword" placeholder="Repeat Password" name="repeat_password">
                         <?php
                         // if(isset($_SESSION['password_error'])){
                         //   echo '<div class="display-error">'.$_SESSION['password_error'].'</div>';

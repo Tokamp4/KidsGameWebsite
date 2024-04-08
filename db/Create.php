@@ -68,12 +68,13 @@ function create_database(){
             fName VARCHAR(50) NOT NULL, 
             lName VARCHAR(50) NOT NULL, 
             userName VARCHAR(20) NOT NULL UNIQUE,
+            password VARCHAR(255) NOT NULL,  -- Adding password column
             registrationTime DATETIME NOT NULL,
             id VARCHAR(200) GENERATED ALWAYS AS (CONCAT(UPPER(LEFT(fName,2)),UPPER(LEFT(lName,2)),UPPER(LEFT(userName,3)),CAST(registrationTime AS SIGNED))),
             registrationOrder INTEGER AUTO_INCREMENT,
             PRIMARY KEY (registrationOrder)
         ) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci",
-    
+        
         "CREATE TABLE IF NOT EXISTS authenticator(   
             passCode VARCHAR(255) NOT NULL,
             registrationOrder INTEGER, 

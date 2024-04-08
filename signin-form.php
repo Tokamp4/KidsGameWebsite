@@ -1,12 +1,8 @@
-<?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Quiz</title>
+    <title>Sign In</title>
     <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,700" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="public/assets/css/main.css">
@@ -35,16 +31,16 @@ ini_set('display_errors', 1);
                     <!-- Display any flash messages here -->
                 </div>
                 <div class="wrapper">
-                    <form method="post" action="src/features/signin.php" >
+                    <form method="post" action="src/features//signinT.php" >
                         <div class="form-group">
                             <label for="username">Username</label>
-                            <input type="username" value ="username" class="form-control" name="username" id="exampleInputEmail1" placeholder="Username" >
+                            <input type="text" class="form-control" name="username" id="exampleInputEmail1" placeholder="Username" >
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Password</label>
-                            <input type="password" value="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password" >
+                            <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password" >
                         </div>
-                        <button type="submit" class="btn btn-default" name="login" value="login">Submit</button>
+                        <button type="submit" class="btn btn-default" name="login">Submit</button>
                     </form>
                 </div>
                 <div class="display-error">
