@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Quiz</title>
+    <title>Sign Up</title>
     <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,700" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="public/assets/css/main.css">
@@ -26,76 +26,33 @@
     </div>
     <div class="container padding-top">
         <div class="row">
-            <div class="col-md-6 col-md-offset-3 ">
-
-                <div class="wraper">
-                  <div class="er">
-                  <?php
-                  // if(isset($_SESSION['er'])) {
-                  //   echo $_SESSION['er'].'<br>';
-                  //     unset($_SESSION['er']);
-                  //     echo $_SESSION['dev_error'];
-                  //   }
-                  ?>
-                  </div>
-
-                    <form method="POST" action="src/features/signup.php">
-                     <div class="form-group">
-                        <label for="firstName">First Name:</label>
-                        <input type="text" class="form-control" id="firstName" placeholder="First Name" name="firstName">
-                        <?php
-                        // if(isset($_SESSION['error_name'])){
-                        //   echo '<div class="display-error">'.$_SESSION['error_name'].'</div>';
-                        //   unset($_SESSION['error_name']);
-                        // }
-
-                        ?>
-                      </div>
-                      <div class="form-group">
-                        <label for="lastName">Last Name:</label>
-                        <input type="text" class="form-control" id="lastName" placeholder="Last Name" name="lastName">
-                        <?php
-                        // if(isset($_SESSION['error_name'])){
-                        //   echo '<div class="display-error">'.$_SESSION['error_name'].'</div>';
-                        //   unset($_SESSION['error_name']);
-                        // }
-
-                        ?>
-                      </div>
-                      <div class="form-group">
-                        <label for="username">Username:</label>
-                        <input type="text" class="form-control" id="username" placeholder="Username" name="username">
-                        <?php
-                        // if(isset($_SESSION['error_name'])){
-                        //   echo '<div class="display-error">'.$_SESSION['error_name'].'</div>';
-                        //   unset($_SESSION['error_name']);
-                        // }
-
-                        ?>
-                      </div>
-                      <div class="form-group">
-                        <label for="exampleInputPassword">Password:</label>
-                        <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password" name="password">
-                        <?php
-                        // if(isset($_SESSION['password_error'])){
-                        //   echo '<div class="display-error">'.$_SESSION['password_error'].'</div>';
-                        //   unset($_SESSION['password_error']);
-                        // }
-                        ?>
-                      </div>
-                      <div class="form-group">
-                        <label for="repeatPassword">Repeat Password:</label>
-                        <input type="password" class="form-control" id="repeatPassword" placeholder="Repeat Password" name="repeat_password">
-                        <?php
-                        // if(isset($_SESSION['password_error'])){
-                        //   echo '<div class="display-error">'.$_SESSION['password_error'].'</div>';
-                        //   unset($_SESSION['password_error']);
-                        // }
-                        ?>
-                      </div>
-                   
-                      <br>
-                      <input type="submit"  value="Submit" class="btn btn-default">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="flash-info">
+                    <!-- Display any flash messages here -->
+                </div>
+                <div class="wrapper">
+                    <form method="post" action="signup.php">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" class="form-control" id="firstName" placeholder="First Name" name="firstName">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" placeholder="Last Name" name="lastName">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" placeholder="Username" name="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" name="confirmPassword">
+                        </div>
+                        <button type="submit" class="btn btn-default" name="register">Register</button>
                     </form>
                 </div>
                 <div class="display-error">
