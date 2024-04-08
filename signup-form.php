@@ -39,7 +39,7 @@
                   ?>
                   </div>
 
-                    <form method="POST" action="src/features/signupT.php">
+                    <form method="POST" action="src/features/signup.php">
                      <div class="form-group">
                         <label for="firstName">First Name:</label>
                         <input type="text" class="form-control" id="firstName" placeholder="First Name" name="firstName">
