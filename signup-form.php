@@ -40,7 +40,7 @@
                   ?>
                   </div>
 
-                    <form method="POST" action="src/features/signupT.php">
+                    <form method="POST" action="src/features/signup.php">
                      <div class="form-group">
                         <label for="name">Name:</label>
                         <input type="text" class="form-control" id="name" placeholder="Name" name="name">
