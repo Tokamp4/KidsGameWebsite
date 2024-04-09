@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $message = "Correct – You identified the smallest and largest numbers correctly.";
 
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>NEED TO IMPLEMENT PLAY AGAIN.
-    $nextQuestionButton = '<button onclick="location.href=\'Question_5.php\'">Play Again</button>';
+    $nextQuestionButton = '<button onclick="location.href=\'Last_Page.php\'">Play Again</button>';
     
   } else {
     $message = "Incorrect – Please identify the smallest and largest numbers correctly.";
