@@ -61,11 +61,11 @@ VALUES('$2y$10$AMyb4cbGSWSvEcQxt91ZVu5r5OV7/3mMZl7tn8wnZrJ1ddidYfVYW', 1);
 INSERT INTO authenticator(passCode, registrationOrder)
 VALUES('$2y$10$Lpd3JsgFW9.x2ft6Qo9h..xmtm82lmSuv/vaQKs9xPJ4rhKlMJAF.', 2);
 
--- $passCode=password_hash('hellocanada', PASSWORD_DEFAULT);
+-- $passCode=password_hash('hellocanada', PASSWORD_DEFAULT);//
 INSERT INTO authenticator(passCode, registrationOrder)
 VALUES('$2y$10$FRAyAIK6.TYEEmbOHF4JfeiBCdWFHcqRTILM7nF/7CPjE3dNEWj3W', 3);
 
--- 4.3.Table score
+-- 4.3.Table score//
 INSERT INTO score(scoreTime, result , livesUsed, registrationOrder)
 VALUES(now(), 'réussite', 4, 1);
 

@@ -9,13 +9,13 @@ class Select extends Database {
         $this->userName = $un;
         $this->registrationOrder = $ro; 
     }
-
+//
     //Method for data Retrieve
     public function selectFromTAB(){
         //1-Successful Connect to the DBMS 
         if ($this->connectToDBMS() === TRUE) {  
             //2-Successful Connect to the DB
-            if ($this->connectToDB(DBNAME) === TRUE) { 
+            if ($this->connectToDB('kidsGames') === TRUE) { 
                 //3-Successfull Table description
                 if ($this->executeOneQuery($this->sqlCode()['validateTab']) === TRUE){
                     //4-Successfull Table select

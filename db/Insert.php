@@ -30,7 +30,7 @@ class Insert extends Database {
         //1-Successful Connect to the DBMS 
         if ($this->connectToDBMS() === TRUE) {  
             //2-Successful Connect to the DB
-            if ($this->connectToDB(DBNAME) === TRUE) { 
+            if ($this->connectToDB('kidsGames') === TRUE) { 
                 //3-Successfull Table description
                 if ($this->executeOneQuery($this->sqlCode()['validateTab']) === TRUE){
                     //4-Failed Table insert
@@ -51,7 +51,7 @@ class Insert extends Database {
         }
     }
 
-    //Method for SQL Queries  
+    //Method for SQL Queries  //
     private function sqlCode()
     {
         //SQL query

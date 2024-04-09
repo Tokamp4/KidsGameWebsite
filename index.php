@@ -7,7 +7,7 @@ if (!isset($_SESSION)){
     header('Location: public/form/game-form.php'); 
 }
 else {
-    //Redirect to the appropriate game form level
+    //Redirect to the appropriate game form level//
     header('Location: game.php');
 }
 ?> 

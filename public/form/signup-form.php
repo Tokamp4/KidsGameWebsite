@@ -76,6 +76,6 @@ include('../template/footer.php')
     <script src="../assets/js/menu.js"></script>
 </body>
 <footer>
-    <?php // footernavigator();?>
+    <?php /// footernavigator();?>
 </footer>
 </html>
