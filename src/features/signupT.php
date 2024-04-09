@@ -52,14 +52,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // Insert user data into the database
                     $insertQuery = "INSERT INTO player (fName, lName, userName, registrationTime) VALUES ('$firstName', '$lastName', '$username', NOW())";
 
-                    // Execute the query//
-                    if ($db->executeOneQuery($insertQuery)) {
-                        // Registration successful
-                        $_SESSION['success_message'] = "Registration successful. You can now login.";
-                        header("Location: ../../signin-form.php");
-                        exit();
-                    } else {
-                        $error_message = "Error inserting user.";
+                    // Execute the query
+                    try {
+                        if ($db->executeOneQuery($insertQuery)) {
+                            // Registration successful
+                            $_SESSION['success_message'] = "Registration successful. You can now login.";
+                            header("Location: ../../signin-form.php");
+                            exit();
+                        } else {
+                            $error_message = "Error inserting user.";
+                        }
+                    } catch (mysqli_sql_exception $e) {
+                        // Handle duplicate entry exception
+                        $error_message = "Username already exists. Please choose a different username.";
                     }
                 }
             } else {
