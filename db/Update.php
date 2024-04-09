@@ -19,14 +19,14 @@ class Update extends Database {
         //1-Successful Connect to the DBMS 
         if ($this->connectToDBMS() === TRUE) {  
             //2-Successful Connect to the DB
-            if ($this->connectToDB(DBNAME) === TRUE) { 
+            if ($this->connectToDB('kidsGames') === TRUE) { 
                 //3-Successfull Table description
                 if ($this->executeOneQuery($this->sqlCode()['validateTab']) === TRUE){
                     //4-Failed Table Column Update
                     if ($this->executeOneQuery($this->sqlCode()[$this->actionKey]) === FALSE){
                         die($this->messages()['error']['updateCOL']."<br/>".($this->lastErrMsg));
                     }   
-                //3-Failed Table description
+                //3-Failed Table description//
                 } else {
                     die($this->messages()['error']['descTAB']."<br/>".($this->lastErrMsg));
                 }
@@ -56,8 +56,4 @@ class Update extends Database {
         //Return an array of queries
         return $sqlCode;
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 646b0f6d1c13b0001bb222645cb19175a5a31fb9
