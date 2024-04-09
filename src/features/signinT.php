@@ -8,8 +8,11 @@ include ('../../db/Database.php');
 function authenticateUser($username, $password, $conn) {
     $sql = "SELECT a.passCode, p.registrationOrder FROM authenticator a 
             JOIN player p ON a.registrationOrder = p.registrationOrder 
-            WHERE p.userName='$username'";
-    $result = $conn->query($sql);
+            WHERE p.userName=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result->num_rows == 1) {
         $row = $result->fetch_assoc();
@@ -44,11 +47,12 @@ if (isset($_SESSION['registrationOrder'])) {
     exit(); // Ensure no further code execution
 }
 
-// Login form submission
-if (isset($_POST['login'])) {
+// Check if there's a login attempt
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
+    // Authenticate user
     if (authenticateUser($username, $password, $conn)) {
         // Authentication successful, start session and redirect to game page
         $_SESSION['username'] = $username;
@@ -56,13 +60,10 @@ if (isset($_POST['login'])) {
         header("Location: game.php");
         exit(); // Ensure no further code execution
     } else {
-        // Authentication failed
+        // Authentication failed, display error message
         $error_message = "Sorry, the username or password is incorrect!";
     }
 }
 
-// Process logout request
-if (isset($_GET['logout'])) {
-    logout();
-}
+// Include your HTML content for the signin form
 ?>

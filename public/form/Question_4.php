@@ -2,6 +2,9 @@
 <html>
 <head>
     <title>Quiz Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/index.css">
 </head>
 <body>
     <h1>Question 4</h1>
@@ -15,6 +18,7 @@
     </form>
     <?php
     // Check if form is submitted
+    
     if(isset($_POST['submit'])){
         // Correct answer
         $correct_answer = 'C';

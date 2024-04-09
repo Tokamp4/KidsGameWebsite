@@ -1,27 +1,58 @@
-<?php
-include("config.php");
+<?php 
+include ("common.php");
+include ("db/Create.php");
 create_database();
-display_header();
-display_navigation_menu();
-?>
+?> 
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>
+        Quiz Ajax
+    </title>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:200,300,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="public/assets/css/main.css">
+    <link rel="stylesheet" href="public/assets/css/index.css">
+</head>
+
 <body>
-    <section>
-        <h2>Featured Games</h2>
-        <div>
-            <h3>Sign up</h3>
-            <button>
-                <a href="src/features/signup.php">Sign up</a>
-            </button>
+    <?php generateIndexHeader2(); ?>
+    <div class="container text-center">
+            <h1>QUIZZ GAME</h1>
         </div>
-        <div>
-            <h3>Sign in</h3>
-            <button>
-                <a href="src/features/signin.php" >Sign in</a>
-            </button>
+
+        <div class="container pading-top">
+            <div class="container pading-top"></div>
+
+            <div class="row margin-top">
+                <div class="col-lg-4 col-md-6 col-sm-12" id=col-1>
+                    <h2 class="text-center"><i class="fa fa-home fa-2x" aria-hidden="true"></i></h2>  Welcome To Our Simple Quizz Game 
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12" id=col-2>
+                    <h2 class="text-center">
+                        <i class="fa fa-database fa-2x" aria-hidden="true"></i>
+                    </h2>
+                    Fully Supporting Database
+                </div>
+                <a href="quiz_user.php">
+                    <div class="col-lg-4 col-md-6 col-sm-12 " id=col-3>
+                        <h2 class="text-center"><i class="fa fa-gamepad fa-2x" aria-hidden="true"></i></h2>
+                        Enjoy An Entertaining Quizz Moment 
+                    </div>
+                </a>
+                
+              
+            </div>
         </div>
-    </section>
-    <?php
-    display_footer();
-    ?>
+
+   
 </body>
-</html>
+<footer>
+    <?php footernavigator();?>
+</footer>
+</html> 
