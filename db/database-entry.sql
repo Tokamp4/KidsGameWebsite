@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS player(
     fName VARCHAR(50) NOT NULL, 
     lName VARCHAR(50) NOT NULL, 
     userName VARCHAR(20) NOT NULL UNIQUE,
+   
     registrationTime DATETIME NOT NULL,
     id VARCHAR(200) GENERATED ALWAYS AS (CONCAT(UPPER(LEFT(fName,2)),UPPER(LEFT(lName,2)),UPPER(LEFT(userName,3)),CAST(registrationTime AS SIGNED))),
     registrationOrder INTEGER AUTO_INCREMENT,
@@ -28,7 +29,7 @@ CREATE TABLE IF NOT EXISTS authenticator(
 
 CREATE TABLE IF NOT EXISTS score( 
     scoreTime DATETIME NOT NULL, 
-    result ENUM('win', 'gameover', 'incomplete'),
+    result ENUM('réussite', 'échec', 'incomplet'),
     livesUsed INTEGER NOT NULL,
     registrationOrder INTEGER, 
     FOREIGN KEY (registrationOrder) REFERENCES player(registrationOrder)
@@ -66,12 +67,11 @@ VALUES('$2y$10$FRAyAIK6.TYEEmbOHF4JfeiBCdWFHcqRTILM7nF/7CPjE3dNEWj3W', 3);
 
 -- 4.3.Table score
 INSERT INTO score(scoreTime, result , livesUsed, registrationOrder)
-VALUES(now(), 'win', 4, 1);
+VALUES(now(), 'réussite', 4, 1);
 
 INSERT INTO score(scoreTime, result , livesUsed, registrationOrder)
-VALUES(now(), 'gameover', 6, 2);
+VALUES(now(), 'échec', 6, 2);
 
 INSERT INTO score(scoreTime, result , livesUsed, registrationOrder)
-VALUES(now(), 'incomplete', 5, 3);
-
-COMMIT;
+VALUES(now(), 'incomplet', 5, 3);
+ALTER TABLE player ADD CONSTRAINT unique_username UNIQUE (userName);

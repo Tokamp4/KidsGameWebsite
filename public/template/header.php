@@ -12,9 +12,10 @@ function generateIndexHeader2() {
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css?family=Raleway:200,300,700" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-        <link rel="stylesheet" href="public/assets/css/main.css">
        
-        <link rel="stylesheet" href="public/assets/css/index.css">
+   
+        <link rel="stylesheet" href="../assets/css/index.css">
+        <link rel="stylesheet" href="../assets/css/main.css">
     </head>
 
     <body>
@@ -29,7 +30,7 @@ function generateIndexHeader2() {
             <div id="menu-wrap">
                 <nav>
                     <ul>
-                        <li><a href="index.php">HOME</a></li>
+                        <li><a href="game-form.php">HOME</a></li>
                         <li><a href="signin-form.php">LOGIN</a></li>
                         <li><a href="signup-form.php">SIGNUP</a></li>
                       
@@ -47,6 +48,6 @@ function generateIndexHeader2() {
 
 
         </script>
-        <script src="public/assets/js/menu.js"></script>';
+        <script src="../assets/js/menu.js"></script>';
 }
 ?>

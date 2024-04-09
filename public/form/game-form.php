@@ -1,17 +1,7 @@
-<?php 
-include ("common.php");
-include ("db/Create.php");
-
-if (!isset($_SESSION)){
-    //Redirect to the login form
-    header('Location: public/form/game-form.php'); 
-}
-else {
-    //Redirect to the appropriate game form level
-    header('Location: game.php');
-}
+ <?php 
+ include('../template/header.php');
+include('../template/footer.php')
 ?> 
-<!-- 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,9 +17,8 @@ else {
     <link rel="stylesheet" href="public/assets/css/main.css">
     <link rel="stylesheet" href="public/assets/css/index.css">
 </head>
-
 <body>
-    <?php //generateIndexHeader2(); ?>
+    <?php generateIndexHeader2(); ?>
     <div class="container text-center">
             <h1>QUIZZ GAME</h1>
         </div>
@@ -61,6 +50,6 @@ else {
    
 </body>
 <footer>
-    <?php //footernavigator();?>
+    <?php footernavigator();?>
 </footer>
-</html>  -->
+</html> 

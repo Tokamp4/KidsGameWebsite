@@ -1,33 +1,59 @@
+
 <?php
-include 'database.php';
 
-// Update a player's username
-$oldUserName = 'sonic12345';
-$newUserName = 'sonic2024';
-$stmt = $conn->prepare("UPDATE player SET userName = ? WHERE userName = ?");
-$stmt->bind_param("ss", $newUserName, $oldUserName);
-$stmt->execute();
-echo "Player username updated successfully.<br>";
+class Update extends Database {
+    //Properties
+    private $actionKey; 
+    private $passCode, $registrationOrder;
 
-// Update a password in the authenticator table
-// Assume we know the registrationOrder of the user we want to update
-$registrationOrder = 1;
-$newHashedPassword = password_hash('newPassword123', PASSWORD_DEFAULT);
-$stmt = $conn->prepare("UPDATE authenticator SET passCode = ? WHERE registrationOrder = ?");
-$stmt->bind_param("si", $newHashedPassword, $registrationOrder);
-$stmt->execute();
-echo "Authenticator password updated successfully.<br>";
+    //Constructor Method 
+    public function __construct($key, $pc, $ro){
+        $this->actionKey = $key;
+        $this->passCode = $pc;
+        $this->registrationOrder = $ro;
+        $this->insertToTAB(); 
+    }
 
-// Update a game result in the score table
-// Assume we want to update a specific game result by registrationOrder and scoreTime
-$registrationOrderForScoreUpdate = 1;
-$oldResult = 'incomplete';
-$newResult = 'win';
-$newLivesUsed = 3;
-$stmt = $conn->prepare("UPDATE score SET result = ?, livesUsed = ? WHERE registrationOrder = ? AND result = ?");
-$stmt->bind_param("siis", $newResult, $newLivesUsed, $registrationOrderForScoreUpdate, $oldResult);
-$stmt->execute();
-echo "Score updated successfully.<br>";
+    //Method for Table Column Update 
+    private function InsertToTAB(){
+        //1-Successful Connect to the DBMS 
+        if ($this->connectToDBMS() === TRUE) {  
+            //2-Successful Connect to the DB
+            if ($this->connectToDB('kidsGames') === TRUE) { 
+                //3-Successfull Table description
+                if ($this->executeOneQuery($this->sqlCode()['validateTab']) === TRUE){
+                    //4-Failed Table Column Update
+                    if ($this->executeOneQuery($this->sqlCode()[$this->actionKey]) === FALSE){
+                        die($this->messages()['error']['updateCOL']."<br/>".($this->lastErrMsg));
+                    }   
+                //3-Failed Table description
+                } else {
+                    die($this->messages()['error']['descTAB']."<br/>".($this->lastErrMsg));
+                }
+            //2-Failed Connect to the DB
+            } else {
+                die($this->messages()['error']['conDB']."<br/>".($this->lastErrMsg));
+            }
+        //1-Failed Connect to the DBMS
+        } else {
+            die($this->messages()['error']['conDBMS']."<br/>".($this->lastErrMsg));
+        }
+    }
 
-$conn->close();
-?>
+    //Method for SQL Queries  
+    private function sqlCode()
+    {
+        //SQL query
+        $sqlCode['updateCode']=
+            "UPDATE authenticator 
+            SET passCode='$this->passCode' 
+            WHERE registrationOrder=$this->registrationOrder;";
+    
+                
+        if($this->actionKey==='updateCode')
+            $sqlCode['validateTab'] = "DESC authenticator;";
+
+        //Return an array of queries
+        return $sqlCode;
+    }
+}

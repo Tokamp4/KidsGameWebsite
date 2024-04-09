@@ -1,8 +1,14 @@
 <?php
 session_start();
 
-// Include database connection
-include '../../db/Database.php';
+// Include the Database class
+require_once '../../db/Database.php';
+
+// Create an instance of the Database class
+$db = new Database();
+
+// Initialize error message variable
+$error_message = '';
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -19,28 +25,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($password !== $repeatPassword) {
         $error_message = "Passwords do not match.";
     } else {
-        // Escape user input to prevent SQL injection
-        $firstName = $conn->real_escape_string($firstName);
-        $lastName = $conn->real_escape_string($lastName);
-        $username = $conn->real_escape_string($username);
-        // Hash the password for security
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        // Attempt to connect to the database management system (DBMS)
+        if ($db->connectToDBMS()) {
+            // Attempt to connect to the specific database
+            if ($db->connectToDB('kidsGames')) {
+                // Check if username already exists
+                $checkQuery = "SELECT COUNT(*) AS count FROM player WHERE userName = '$username'";
+                $result = $db->executeOneQuery($checkQuery);
 
-        
-        // Insert user data into the database
-$insertQuery = "INSERT INTO player (fName, lName, userName, password, registrationTime) VALUES ('$firstName', '$lastName', '$username', '$hashedPassword', NOW())";
+                if ($result && is_array($result)) {
+                    $count = $result['count'];
+                } else {
+                    $count = 0;
+                }
 
-        if ($conn->query($insertQuery) === TRUE) {
-            // Registration successful
-            $_SESSION['success_message'] = "Registration successful. You can now login.";
-            header("Location: ../../signin-form.php");
-            exit();
+                if ($count > 0) {
+                    $error_message = "Username already exists. Please choose a different username.";
+                } else {
+                    // Escape user input to prevent SQL injection
+                    $firstName = $db->getConnection()->real_escape_string($firstName);
+                    $lastName = $db->getConnection()->real_escape_string($lastName);
+                    $username = $db->getConnection()->real_escape_string($username);
+                    // Hash the password for security
+                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+                    // Insert user data into the database
+                    $insertQuery = "INSERT INTO player (fName, lName, userName, registrationTime) VALUES ('$firstName', '$lastName', '$username', NOW())";
+
+                    // Execute the query
+                    if ($db->executeOneQuery($insertQuery)) {
+                        // Registration successful
+                        $_SESSION['success_message'] = "Registration successful. You can now login.";
+                        header("Location: ../../signin-form.php");
+                        exit();
+                    } else {
+                        $error_message = "Error inserting user.";
+                    }
+                }
+            } else {
+                $error_message = "Error connecting to database: " . $db->getLastErrorMessage();
+            }
         } else {
-            $error_message = "Error: " . $conn->error;
+            $error_message = "Error connecting to database management system.";
         }
     }
 }
 
 // Close database connection
-$conn->close();
-?>
+$db->__destruct();
+
+// Redirect to signup form with error message, if any
+header("Location: http://localhost/WebServerProject_Winter2024/public/form/signup-form.php?error_message=" . urlencode($error_message));
+exit();

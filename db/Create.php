@@ -1,110 +1,26 @@
 <?php
-
-/*function create_database(){
-    include 'database.php';
-
-    // Create database if it doesn't exist
-    $sql = "CREATE DATABASE IF NOT EXISTS $database CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci";
-    $conn->query($sql);
-    
-    // Select the database
-    $conn->select_db($database);
-    
-    // SQL to create tables and view
-    $tablesAndViewsSql = [
-        "CREATE TABLE IF NOT EXISTS player( 
-            fName VARCHAR(50) NOT NULL, 
-            lName VARCHAR(50) NOT NULL, 
-            userName VARCHAR(20) NOT NULL UNIQUE,
-            registrationTime DATETIME NOT NULL,
-            id VARCHAR(200) GENERATED ALWAYS AS (CONCAT(UPPER(LEFT(fName,2)),UPPER(LEFT(lName,2)),UPPER(LEFT(userName,3)),CAST(registrationTime AS SIGNED))),
-            registrationOrder INTEGER AUTO_INCREMENT,
-            PRIMARY KEY (registrationOrder)
-        ) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci",
-    
-        "CREATE TABLE IF NOT EXISTS authenticator(   
-            passCode VARCHAR(255) NOT NULL,
-            registrationOrder INTEGER, 
-            FOREIGN KEY (registrationOrder) REFERENCES player(registrationOrder)
-        ) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci",
-    
-        "CREATE TABLE IF NOT EXISTS score( 
-            scoreTime DATETIME NOT NULL, 
-            result ENUM('win', 'gameover', 'incomplete'),
-            livesUsed INTEGER NOT NULL,
-            registrationOrder INTEGER, 
-            FOREIGN KEY (registrationOrder) REFERENCES player(registrationOrder)
-        ) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci",
-    
-        "CREATE VIEW IF NOT EXISTS history AS
-        SELECT s.scoreTime, p.id, p.fName, p.lName, s.result, s.livesUsed 
-        FROM player p, score s
-        WHERE p.registrationOrder = s.registrationOrder"
-    ];
-    
-    // Execute each SQL statement to create tables and views
-    foreach ($tablesAndViewsSql as $sql) {
-        $conn->query($sql);
+require_once'Database.php';
+class Create extends Database {
+    //Constructor Method 
+    public function __construct(){
+        $this->createDBnTAB();
     }
-    $conn->close();
-    
+
+    //Method for Database, Tables, and Views Creation 
+    private function createDBnTAB(){
+        //1-Successful Connect to the DBMS 
+        if ($this->connectToDBMS() === TRUE) {  
+            //2-Successful Create Database, Tables, and Views
+            $userSQLcode= file_get_contents("database-entry.sql");
+            if ($this->executeMultiQuery($userSQLcode) === TRUE){
+                return TRUE;
+            //2-Failed Create Database, Tables, and Views
+            } else {
+                die($this->messages()['error']['creatEntity']."<br/>".($this->lastErrMsg));
+            }    
+        //1-Failed Connect to the DBMS
+        } else {
+            die($this->messages()['error']['conDBMS']."<br/>".($this->lastErrMsg));
+        }
+    }
 }
-*/
-
-
-function create_database(){
-    include 'database.php';
-
-    // Create database if it doesn't exist
-    $sql = "CREATE DATABASE IF NOT EXISTS $database CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci";
-    $conn->query($sql);
-    
-    // Select the database
-    $conn->select_db($database);
-    
-    // SQL to create tables and view
-    $tablesAndViewsSql = [
-        "CREATE TABLE IF NOT EXISTS player( 
-            fName VARCHAR(50) NOT NULL, 
-            lName VARCHAR(50) NOT NULL, 
-            userName VARCHAR(20) NOT NULL UNIQUE,
-            password VARCHAR(255) NOT NULL,  -- Adding password column
-            registrationTime DATETIME NOT NULL,
-            id VARCHAR(200) GENERATED ALWAYS AS (CONCAT(UPPER(LEFT(fName,2)),UPPER(LEFT(lName,2)),UPPER(LEFT(userName,3)),CAST(registrationTime AS SIGNED))),
-            registrationOrder INTEGER AUTO_INCREMENT,
-            PRIMARY KEY (registrationOrder)
-        ) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci",
-        
-        "CREATE TABLE IF NOT EXISTS authenticator(   
-            passCode VARCHAR(255) NOT NULL,
-            registrationOrder INTEGER, 
-            FOREIGN KEY (registrationOrder) REFERENCES player(registrationOrder)
-        ) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci",
-    
-        "CREATE TABLE IF NOT EXISTS score( 
-            scoreTime DATETIME NOT NULL, 
-            result ENUM('win', 'gameover', 'incomplete'),
-            livesUsed INTEGER NOT NULL,
-            registrationOrder INTEGER, 
-            FOREIGN KEY (registrationOrder) REFERENCES player(registrationOrder)
-        ) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci"
-    ];
-
-    // Execute each SQL statement to create tables
-    foreach ($tablesAndViewsSql as $sql) {
-        $conn->query($sql);
-    }
-
-    // Check if the view exists before creating 
-    $viewCheck = $conn->query("SHOW TABLES LIKE 'history'");
-    if ($viewCheck->num_rows == 0) {
-        $conn->query("CREATE VIEW history AS
-                      SELECT s.scoreTime, p.id, p.fName, p.lName, s.result, s.livesUsed 
-                      FROM player p, score s
-                      WHERE p.registrationOrder = s.registrationOrder");
-    }
-    
-    $conn->close();
-}
-?>
-
