@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $lastName = $_POST['lastName'];
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $repeatPassword = $_POST['repeat_password'];
+    $repeatPassword = $_POST['confirmPassword'];
 
     // Validate input (You can add more validation if required)
     if (empty($firstName) || empty($lastName) || empty($username) || empty($password) || empty($repeatPassword)) {

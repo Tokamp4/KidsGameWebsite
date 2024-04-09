@@ -31,7 +31,7 @@
                     <!-- Display any flash messages here -->
                 </div>
                 <div class="wrapper">
-                    <form method="post" action="signup.php">
+                    <form method="post" action="src/features/signupT.php">
                         <div class="form-group">
                             <label for="firstName">First Name</label>
                             <input type="text" class="form-control" id="firstName" placeholder="First Name" name="firstName">
