@@ -1,145 +1,190 @@
+
 <?php
-if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    session_start();
-    
-    require_once "../functions/connection-functions.php";
-    require_once "../functions/functions.php";
+// signup.php to handle all AJAX requests for field validation
 
-    $response = ['success' => false, 'message' => ''];
+$field = $_POST['field'] ?? '';
+$value = $_POST['value'] ?? '';
 
-    $userName = $_POST['user_name'] ?? '';
-    $password = $_POST['password'] ?? '';
-    $confirmPassword = $_POST['confirm_password'] ?? '';
-    $fName = $_POST['first_name'] ?? '';
-    $lName = $_POST['last_name'] ?? '';
-
-    if (empty($userName) || empty($password) || empty($fName) || empty($lName)) {
-        $response['message'] = 'Please fill in all fields.';
-    } elseif ($password !== $confirmPassword) {
-        $response['message'] = 'Passwords do not match.';
-    } elseif ($passwordMessage = isPasswordStrong($password)) {
-        $response['message'] = $passwordMessage;
-    } else {
-        $response = ['success' => true, 'message' => 'Registration successful!'];
-    }
-
-    header('Content-Type: application/json');
-    echo json_encode($response);
-    exit;
+function validateFirstName($fname) {
+    return empty($fname) ? "First name is required. Please try again!" : "";
 }
+
+function validateLastName($lname) {
+    return empty($lname) ? "Last name is required. Please try again!" : "";
+}
+
+function validateUsername($uname) {
+    return empty($uname) ? "Username is required. Please try again!" : "";
+}
+
+function validatePassword($password) {
+    if (empty($password)) {
+        return "Password is required. Please try again!";
+    }
+    if (strlen($password) < 6) {
+        return "Password must be at least 6 characters long. Please try again!";
+    }
+    if (!preg_match('/[A-Z]/', $password)) {
+        return "Password must include at least one uppercase letter. Please try again!";
+    }
+    if (!preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) {
+        return "Password must include at least one special character. Please try again!";
+    }
+    return "";
+}
+
+function validateConfirmPassword($password, $confirmPassword) {
+    if ($password !== $confirmPassword) {
+        return "Password doesn't match. Please try again!";
+    }
+    return "";
+}
+
+$response = "";
+switch ($field) {
+    case 'fname':
+        $response = validateFirstName($value);
+        break;
+    case 'lname':
+        $response = validateLastName($value);
+        break;
+    case 'uname':
+        $response = validateUsername($value);
+        break;
+    case 'pcode1':
+        $response = validatePassword($value);
+        break;
+    case 'pcode2':
+        $confirmValue = $_POST['confirmValue'] ?? '';
+        $response = validateConfirmPassword($value, $confirmValue);
+        break;
+    default:
+        $response = "Invalid request";
+}
+
+echo $response;
 ?>
 
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Registration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Form</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $("form").submit(function(event) {
-                event.preventDefault();
-                var formData = {
-                    'user_name': $('input[name=user_name]').val(),
-                    'password': $('input[name=password]').val(),
-                    'confirm_password': $('input[name=confirm_password]').val(),
-                    'first_name': $('input[name=first_name]').val(),
-                    'last_name': $('input[name=last_name]').val()
-                };
-
-                $.ajax({
-                    type: "POST",
-                    url: "signup.php", // URL is this file itself
-                    data: formData,
-                    dataType: "json", 
-                })
-                .done(functioSn(data) {
-                    $('#responseMessage').html(data.message);
-                    if(data.success) {
-                        $('form').trigger("reset");
-                    }
-                })
-                .fail(function(jqXHR, textStatus, errorThrown) {
-                    $('#responseMessage').html("AJAX request failed: " + textStatus + ", " + errorThrown);
-                });
-            });
-        });
-    </script>
-    <style type="text/css">
+    <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        .text{
-            height: 40px;
-            border-radius: 5px;
-            padding: 4px 10px;
-            border: solid thin #aaa;
-            display: block;
-            margin-bottom: 20px;
-            width: calc(100% - 20px);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-        }
-        .text:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 8px rgba(0,123,255,0.2);
-        }
-        #button{
-            padding: 10px;
-            width: calc(100% - 20px);
-            color: white;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
-        #button:hover {
-            background-color: #0056b3;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        #box{
-            background-color: white;
-            margin: 50px auto;
-            width: 300px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        a {
-            color: #007bff;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        a:hover {
-            color: #0056b3;
-            text-decoration: underline;
-        }
+
         form {
-            text-align: center;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        form label {
+            display: block;
+            color: #606770;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        form input[type='text'],
+        form input[type='password'] {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #dddfe2;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            font-size: 17px;
+        }
+
+        form input[type='text']:focus,
+        form input[type='password']:focus {
+            border-color: #1877f2;
+            outline: none;
+        }
+
+        form button {
+            width: 100%;
+            padding: 14px;
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        form button:hover {
+            background-color: #165cbb;
+        }
+
+        #fnameError,
+        #lnameError,
+        #unameError,
+        #pcode1Error,
+        #pcode2Error {
+            color: #f02849;
+            font-size: 13px;
+            height: 20px;
+        }
+
+        @media (max-width: 360px) {
+            form {
+                width: 90%;
+            }
         }
     </style>
+    
 </head>
 <body>
-    <div id="box">
-        <form method="post">
-            <div style="font-size: 20px; margin: 10px; color: black;">Sign up</div>
-            <input class="text" type="text" name="user_name" placeholder="Username">
-            <input class="text" type="password" name="password" placeholder="Password">
-            <input class="text" type="password" name="confirm_password" placeholder="Confirm Password">
-            <input class="text" type="text" name="first_name" placeholder="First Name">
-            <input class="text" type="text" name="last_name" placeholder="Last Name">
-            <input id="button" type="submit" value="Sign up">
-            <br><br>
-            <a href="login.php">Click to Login</a><br><br>
-        </form>
-        <div id="responseMessage" style="margin-top: 20px;"></div>
-    </div>
+
+<form id="signupForm" method="post" novalidate>
+    <label for="fname">First Name:</label>
+    <input type="text" id="fname" name="fname" required>
+    <div id="fnameError"></div>
+
+    <label for="lname">Last Name:</label>
+    <input type="text" id="lname" name="lname" required>
+    <div id="lnameError"></div>
+
+    <label for="uname">Username:</label>
+    <input type="text" id="uname" name="uname" required>
+    <div id="unameError"></div>
+
+    <label for="pcode1">Password:</label>
+    <input type="password" id="pcode1" name="pcode1" required>
+    <div id="pcode1Error"></div>
+
+    <label for="pcode2">Confirm Password:</label>
+    <input type="password" id="pcode2" name="pcode2" required>
+    <div id="pcode2Error"></div>
+
+    <button type="submit">Sign Up</button>
+</form>
+
+<script src="js/jquery-3.6.4.js"></script>
+<script src="js/fname-ajax.js"></script>
+<script src="js/lname-ajax.js"></script>
+<script src="js/uname-ajax.js"></script>
+<script src="js/pcode1-ajax.js"></script>
+<script src="js/pcode2-ajax.js"></script>
+
 </body>
 </html>
-
-
 
 
