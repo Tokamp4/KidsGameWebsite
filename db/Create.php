@@ -1,4 +1,5 @@
 <?php
+require_once'Database.php';
 class Create extends Database {
     //Constructor Method 
     public function __construct(){
@@ -10,7 +11,7 @@ class Create extends Database {
         //1-Successful Connect to the DBMS 
         if ($this->connectToDBMS() === TRUE) {  
             //2-Successful Create Database, Tables, and Views
-            $userSQLcode= file_get_contents("../../db/database-entity.sql");
+            $userSQLcode= file_get_contents("database-entry.sql");
             if ($this->executeMultiQuery($userSQLcode) === TRUE){
                 return TRUE;
             //2-Failed Create Database, Tables, and Views
