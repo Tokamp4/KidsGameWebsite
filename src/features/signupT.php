@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         if ($db->executeOneQuery($insertQuery)) {
                             // Registration successful
                             $_SESSION['success_message'] = "Registration successful. You can now login.";
-                            header("Location: ../../signin-form.php");
+                            header("Location: http://localhost/WebServerProject_Winter2024/public/form/signin-form.php");
                             exit();
                         } else {
                             $error_message = "Error inserting user.";
