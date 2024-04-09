@@ -7,7 +7,7 @@ class Database {
 
     //Constructor Method //
     public function __construct(){
-            $this->connectToDBMS();
+
     }
 
     //Method for customized Messages
@@ -30,10 +30,10 @@ class Database {
     }
     
     //Method for DBMS Connection 
-    public function connectToDBMS()
+    protected function connectToDBMS()
     {
         //Attempt to connect to MySQL using MySQLi
-        $con = new mysqli('localhost','root', '');
+        $con = new mysqli(HOST, USER, PASS);
         //If connection to the MySQL failed save the system error message 
         if ($con->connect_error) {
             $this->lastErrMsg = mysqli_connect_error();
@@ -45,7 +45,7 @@ class Database {
     }
 
     //Method for DB Connection 
-    public function connectToDB($dbname)
+    protected function connectToDB($dbname)
     {
         //Attempt to connect to MySQL using MySQLi
         $con = mysqli_select_db($this->connection, $dbname);
@@ -59,7 +59,7 @@ class Database {
     }
 
     //Method for multiple SQL Query Execution 
-    public function executeMultiQuery($sqlcode)
+    protected function executeMultiQuery($sqlcode)
     {
         //Attempt to execute the query
         $invokeQuery = ($this->connection)->multi_query($sqlcode);
@@ -74,7 +74,7 @@ class Database {
     }   
 
     //Method for one SQL Query Execution 
-    public function executeOneQuery($sqlcode)
+    protected function executeOneQuery($sqlcode)
     {
         //Attempt to execute the query
         $invokeQuery = ($this->connection)->query($sqlcode);
@@ -89,7 +89,7 @@ class Database {
     } 
 
     //Method for Selected Data Recording
-    public function saveSelectedData(){
+    protected function saveSelectedData(){
         //Calculate the number of rows available
         $number_of_rows = ($this->sqlExec)->num_rows;
         if ($number_of_rows==0){
@@ -108,12 +108,7 @@ class Database {
             $this->selectedRows=$data;  
         }
     }
-    public function getConnection() {
-        return $this->connection;
-    }
-    public function getLastErrorMessage() {
-        return $this->lastErrMsg;
-    }
+
      //Destructor Method
      public function __destruct()
      {
