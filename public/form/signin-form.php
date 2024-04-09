@@ -1,3 +1,6 @@
+<?php
+include('../template/footer.php') 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +8,7 @@
     <title>Sign In</title>
     <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,700" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="public/assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
 </head>
 <body>
     <div class="menu-btn">
@@ -17,7 +20,7 @@
         <div id="menu-wrap">
             <nav>
                 <ul>
-                    <li><a href="index.php">HOME</a></li>  
+                    <li><a href="game-form.php">HOME</a></li>  
                     <li><a href="signin-form.php">LOGIN</a></li>
                     <li><a href="signup-form.php">REGISTER</a></li>
                 </ul>
@@ -51,6 +54,9 @@
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
-    <script src="public/assets/js/menu.js"></script>
+    <script src="../assets/js/menu.js"></script>
 </body>
+<footer>
+    <?php //footernavigator();?>
+</footer>
 </html>
