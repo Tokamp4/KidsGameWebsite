@@ -1,61 +1,68 @@
 <?php
-include 'database.php';
 
-// Select and display players
-echo "<h2>Players</h2>";
-$sqlPlayers = "SELECT * FROM player";
-$resultPlayers = $conn->query($sqlPlayers);
+class Select extends Database {
+    private $actionKey, $userName, $registrationOrder; 
 
-if ($resultPlayers->num_rows > 0) {
-    while($row = $resultPlayers->fetch_assoc()) {
-        echo "ID: " . $row["id"]. " - Name: " . $row["fName"]. " " . $row["lName"]. " - Username: " . $row["userName"] . "<br>";
+    //Constructor Method 
+    public function __construct($key, $un='', $ro=''){
+        $this->actionKey = $key; 
+        $this->userName = $un;
+        $this->registrationOrder = $ro; 
     }
-} else {
-    echo "No players found.<br>";
-}
 
-// Select and display password hash for a specific registrationOrder
-echo "<h2>Password Hashes</h2>";
-$registrationOrder = 1; // Example registration order
-$stmtAuthenticator = $conn->prepare("SELECT passCode FROM authenticator WHERE registrationOrder = ?");
-$stmtAuthenticator->bind_param("i", $registrationOrder);
-$stmtAuthenticator->execute();
-$resultAuthenticator = $stmtAuthenticator->get_result();
-
-if ($resultAuthenticator->num_rows > 0) {
-    while($row = $resultAuthenticator->fetch_assoc()) {
-        echo "Password Hash for Registration Order $registrationOrder: " . $row["passCode"] . "<br>";
+    //Method for data Retrieve
+    public function selectFromTAB(){
+        //1-Successful Connect to the DBMS 
+        if ($this->connectToDBMS() === TRUE) {  
+            //2-Successful Connect to the DB
+            if ($this->connectToDB(DBNAME) === TRUE) { 
+                //3-Successfull Table description
+                if ($this->executeOneQuery($this->sqlCode()['validateTab']) === TRUE){
+                    //4-Successfull Table select
+                    if ($this->executeOneQuery($this->sqlCode()[$this->actionKey]) === TRUE){
+                        //5-Successfull Selected Data Recording 
+                        $this->saveSelectedData();
+                        return $this->selectedRows; 
+                    //4-Failed Table select
+                    } else {
+                        die($this->messages()['error']['selectTAB']."<br/>".($this->lastErrMsg));
+                    }   
+                //3-Failed Table description
+                } else {
+                    die($this->messages()['error']['descTAB']."<br/>".($this->lastErrMsg));
+                }
+            //2-Failed Connect to the DB
+            } else {
+                die($this->messages()['error']['conDB']."<br/>".($this->lastErrMsg));
+            }
+        //1-Failed Connect to the DBMS
+        } else {
+            die($this->messages()['error']['conDBMS']."<br/>".($this->lastErrMsg));
+        }
     }
-} else {
-    echo "No password hash found for the specified registration order.<br>";
-}
 
-// Select and display scores
-echo "<h2>Scores</h2>";
-$sqlScores = "SELECT scoreTime, result, livesUsed, registrationOrder FROM score ORDER BY scoreTime DESC";
-$resultScores = $conn->query($sqlScores);
+    //Method for SQL Queries  
+    private function sqlCode()
+    {
+        //SQL query
+        $sqlCode['selectAllUn'] = 
+            "SELECT userName FROM player 
+            ORDER BY registrationOrder;";
+        
+        $sqlCode['selectKey'] = 
+            "SELECT registrationOrder FROM player 
+            WHERE userName='$this->userName';";
 
-if ($resultScores->num_rows > 0) {
-    while($row = $resultScores->fetch_assoc()) {
-        echo "Game Ended: " . $row["scoreTime"]. " - Result: " . $row["result"]. " - Lives Used: " . $row["livesUsed"] . " - Registration Order: " . $row["registrationOrder"] . "<br>";
+        $sqlCode['selectCode'] = 
+            "SELECT passCode FROM authenticator 
+            WHERE registrationOrder='$this->registrationOrder';";
+                          
+        if($this->actionKey==='selectAllUn' || $this->actionKey==='selectKey')
+            $sqlCode['validateTab'] = "DESC player;";
+        else if ($this->actionKey==='selectCode')
+            $sqlCode['validateTab'] = "DESC authenticator;";
+        
+        //Return an array of queries
+        return $sqlCode;
     }
-} else {
-    echo "No game scores found.<br>";
 }
-
-// Select and display history
-echo "<h2>Game History</h2>";
-$sqlHistory = "SELECT * FROM history";
-$resultHistory = $conn->query($sqlHistory);
-
-if ($resultHistory->num_rows > 0) {
-    while($row = $resultHistory->fetch_assoc()) {
-        echo "Game Time: " . $row["scoreTime"]. " - Player ID: " . $row["id"]. " - Name: " . $row["fName"] . " " . $row["lName"] . " - Result: " . $row["result"]. " - Lives Used: " . $row["livesUsed"] . "<br>";
-    }
-} else {
-    echo "No history records found.<br>";
-}
-
-$conn->close();
-?>
-

@@ -1,50 +1,80 @@
 <?php
-include 'database.php';
 
-// Dummy data for the player table
-$playerData = [
-    ['Patrick', 'Saint-Louis', 'sonic12345', 'NOW()'],
-    ['Marie', 'Jourdain', 'asterix2023', 'NOW()'],
-    ['Jonathan', 'David', 'pokemon527', 'NOW()']
-];
+class Insert extends Database {
+    //Properties
+    private $actionKey; 
+    private $firstName, $lastName, $userName, $registrationTime;
+    private $passCode, $registrationOrder; 
+    private $scoreTime, $finalResult, $livesUsed;
 
-// Insert data into the player table
-foreach ($playerData as $data) {
-    $stmt = $conn->prepare("INSERT INTO player (fName, lName, userName, registrationTime) VALUES (?, ?, ?, NOW())");
-    $stmt->bind_param("sss", $data[0], $data[1], $data[2]);
-    $stmt->execute();
+    //Constructor Method 
+    public function __construct($key,
+    $fn='', $ln='', $un='', $rt='', 
+    $pc='',$ro='', 
+    $st='', $fr='', $lu=''){
+        $this->actionKey = $key;
+        $this->firstName = $fn;
+        $this->lastName = $ln;
+        $this->userName = $un;
+        $this->registrationTime = $rt;
+        $this->passCode = $pc;
+        $this->registrationOrder = $ro;
+        $this->scoreTime = $st;
+        $this->finalResult = $fr;
+        $this->livesUsed = $lu;  
+        $this->insertToTAB(); 
+    }
+
+    //Method for records Insertion 
+    private function InsertToTAB(){
+        //1-Successful Connect to the DBMS 
+        if ($this->connectToDBMS() === TRUE) {  
+            //2-Successful Connect to the DB
+            if ($this->connectToDB(DBNAME) === TRUE) { 
+                //3-Successfull Table description
+                if ($this->executeOneQuery($this->sqlCode()['validateTab']) === TRUE){
+                    //4-Failed Table insert
+                    if ($this->executeOneQuery($this->sqlCode()[$this->actionKey]) === FALSE){
+                        die($this->messages()['error']['insertTAB']."<br/>".($this->lastErrMsg));
+                    }   
+                //3-Failed Table description
+                } else {
+                    die($this->messages()['error']['descTAB']."<br/>".($this->lastErrMsg));
+                }
+            //2-Failed Connect to the DB
+            } else {
+                die($this->messages()['error']['conDB']."<br/>".($this->lastErrMsg));
+            }
+        //1-Failed Connect to the DBMS
+        } else {
+            die($this->messages()['error']['conDBMS']."<br/>".($this->lastErrMsg));
+        }
+    }
+
+    //Method for SQL Queries  
+    private function sqlCode()
+    {
+        //SQL query
+        $sqlCode['insertIdentity']=
+            "INSERT INTO player(fName, lName, userName, registrationTime)
+            VALUES('$this->firstName', '$this->lastName', '$this->userName', $this->registrationTime);";
+        
+        $sqlCode['insertCredentials']=
+            "INSERT INTO authenticator(passCode,registrationOrder)
+            VALUES('$this->passCode', $this->registrationOrder);";
+                       
+        $sqlCode['insertGameScore']=
+            "INSERT INTO score(scoreTime, result , livesUsed, registrationOrder)
+            VALUES('$this->scoreTime', '$this->finalResult', '$this->livesUsed', '$this->registrationOrder');";
+                
+        if($this->actionKey==='insertIdentity')
+            $sqlCode['validateTab'] = "DESC player;";
+        else if ($this->actionKey==='insertCredentials')
+            $sqlCode['validateTab'] = "DESC authenticator;";
+        else if ($this->actionKey==='insertGameScore')
+            $sqlCode['validateTab'] = "DESC score;";
+
+        //Return an array of queries
+        return $sqlCode;
+    }
 }
-
-// Assuming password_hash() was used to hash these passwords beforehand
-$authenticatorData = [
-    ['$2y$10$AMyb4cbGSWSvEcQxt91ZVu5r5OV7/3mMZl7tn8wnZrJ1ddidYfVYW', 1],
-    ['$2y$10$Lpd3JsgFW9.x2ft6Qo9h..xmtm82lmSuv/vaQKs9xPJ4rhKlMJAF.', 2],
-    ['$2y$10$FRAyAIK6.TYEEmbOHF4JfeiBCdWFHcqRTILM7nF/7CPjE3dNEWj3W', 3]
-];
-
-// Insert data into the authenticator table
-foreach ($authenticatorData as $data) {
-    $stmt = $conn->prepare("INSERT INTO authenticator (passCode, registrationOrder) VALUES (?, ?)");
-    $stmt->bind_param("si", $data[0], $data[1]);
-    $stmt->execute();
-}
-
-// Dummy data for the score table
-$scoreData = [
-    ['NOW()', 'win', 4, 1],
-    ['NOW()', 'gameover', 6, 2],
-    ['NOW()', 'incomplete', 5, 3]
-];
-
-// Insert data into the score table
-foreach ($scoreData as $data) {
-    $stmt = $conn->prepare("INSERT INTO score (scoreTime, result, livesUsed, registrationOrder) VALUES (NOW(), ?, ?, ?)");
-    $stmt->bind_param("sii", $data[1], $data[2], $data[3]);
-    $stmt->execute();
-}
-
-echo "Dummy data inserted successfully.";
-
-$conn->close();
-?>
-
