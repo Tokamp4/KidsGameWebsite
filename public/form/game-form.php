@@ -1,5 +1,5 @@
- <?php 
- include('../template/header.php');
+<?php 
+include('../template/header.php');
 include('../template/footer.php')
 ?> 
 <!DOCTYPE html>
