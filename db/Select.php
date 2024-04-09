@@ -9,7 +9,7 @@ class Select extends Database {
         $this->userName = $un;
         $this->registrationOrder = $ro; 
     }
-
+//
     //Method for data Retrieve
     public function selectFromTAB(){
         //1-Successful Connect to the DBMS 

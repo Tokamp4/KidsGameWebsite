@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // Insert user data into the database
                     $insertQuery = "INSERT INTO player (fName, lName, userName, registrationTime) VALUES ('$firstName', '$lastName', '$username', NOW())";
 
-                    // Execute the query
+                    // Execute the query//
                     if ($db->executeOneQuery($insertQuery)) {
                         // Registration successful
                         $_SESSION['success_message'] = "Registration successful. You can now login.";

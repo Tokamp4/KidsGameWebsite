@@ -5,7 +5,7 @@ class Create extends Database {
     public function __construct(){
         $this->createDBnTAB();
     }
-
+//
     //Method for Database, Tables, and Views Creation 
     private function createDBnTAB(){
         //1-Successful Connect to the DBMS 

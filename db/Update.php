@@ -26,7 +26,7 @@ class Update extends Database {
                     if ($this->executeOneQuery($this->sqlCode()[$this->actionKey]) === FALSE){
                         die($this->messages()['error']['updateCOL']."<br/>".($this->lastErrMsg));
                     }   
-                //3-Failed Table description
+                //3-Failed Table description//
                 } else {
                     die($this->messages()['error']['descTAB']."<br/>".($this->lastErrMsg));
                 }

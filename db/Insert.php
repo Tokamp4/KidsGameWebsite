@@ -51,7 +51,7 @@ class Insert extends Database {
         }
     }
 
-    //Method for SQL Queries  
+    //Method for SQL Queries  //
     private function sqlCode()
     {
         //SQL query

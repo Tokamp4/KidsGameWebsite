@@ -5,7 +5,7 @@ require_once "Insert.php";
 require_once "Select.php";
 require_once "Update.php";
 
-//Object for creating database, tables, and views
+//Object for creating database, tables, and views//
 $objCreation = new Create;
 var_dump ($objCreation);
 

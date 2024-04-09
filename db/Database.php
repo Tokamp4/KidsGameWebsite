@@ -5,7 +5,7 @@ class Database {
     private $connection, $sqlExec; 
     protected $lastErrMsg, $selectedRows;
 
-    //Constructor Method 
+    //Constructor Method //
     public function __construct(){
             $this->connectToDBMS();
     }
