@@ -55,10 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Level 3: Order the numbers in descending order</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">   
-    <link rel="stylesheet" href="../assets/css/main.css">
-    <link rel="stylesheet" href="../assets/css/index.css">
+<title>Level 4: Order the numbers in descending order</title>
 <style>
 /* This CSS is to hide the spinners. */
 input[type="number"]::-webkit-inner-spin-button,
