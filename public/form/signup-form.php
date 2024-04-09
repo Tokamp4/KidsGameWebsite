@@ -22,7 +22,7 @@ include('../template/footer.php')
         <div class="bar3"></div>
     </div>
     <div class="menu">
-        <div id="menu-wrap">\
+        <div id="menu-wrap">
             <nav>
                 <ul>
                     <li><a href="game-form.php">HOME</a></li>  
