@@ -1,5 +1,24 @@
 <?php
-include('../template/footer.php') 
+session_start();
+$error_message = isset($_GET['error_message']) ? $_GET['error_message'] : '';
+
+// Output the error message if it's not empty
+if (!empty($error_message)) {
+    echo "<div class='error-message'></div>";}
+    $success_message = isset($_GET['success_message']) ? $_GET['success_message'] : '';
+
+// Output the error message if it's not empty
+if (!empty($success_message)) {
+    echo "<div class='success'></div>";}
+
+include('../template/footer.php') ;
+// if (isset($_SESSION['success_message'])) {
+//     $success_message = $_SESSION['success_message'];
+//     // Display success message or handle it as needed
+//     echo $success_message;
+//     // Clear the success message from the session
+//     unset($_SESSION['success_message']);
+// }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,21 +53,33 @@ include('../template/footer.php')
                     <!-- Display any flash messages here -->
                 </div>
                 <div class="wrapper">
-                    <form method="post" action="src/features//signinT.php" >
+                    <form method="POST" action="../../src/features/signinT.php" >
                         <div class="form-group">
                             <label for="username">Username</label>
-                            <input type="text" class="form-control" name="username" id="exampleInputEmail1" placeholder="Username" >
+                            <input type="text" class="form-control"  id="exampleInputEmail1" placeholder="Username" name="username" >
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password" >
+                            <input type="password" class="form-control"  id="exampleInputPassword1" placeholder="Password" name="password">
                         </div>
                         <button type="submit" class="btn btn-default" name="login">Submit</button>
                     </form>
                 </div>
-                <div class="display-error">
+                <div id="display-success">
                     <!-- Display any error messages here -->
                     <?php if (isset($error_message)) { echo $error_message; } ?>
+                  <?php
+                    if (isset($_SESSION['success_message'])) {
+                     $success_message = $_SESSION['success_message'];
+                    // Display success message or handle it as needed
+                     echo $success_message;
+                      // Clear the success message from the session
+                     unset($_SESSION['success_message']);
+}?>
+                </div>
+                <div class="success">
+                <!--Display error -->
+                
                 </div>
             </div>
         </div>

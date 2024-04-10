@@ -1,69 +1,73 @@
 <?php
 session_start();
 
-// Include database connection
-include ('../../db/Database.php');
+// Include the Database class
+require_once '../../db/Database.php';
 
-// Function to authenticate user
-function authenticateUser($username, $password, $conn) {
-    $sql = "SELECT a.passCode, p.registrationOrder FROM authenticator a 
-            JOIN player p ON a.registrationOrder = p.registrationOrder 
-            WHERE p.userName=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
+// Create an instance of the Database class
+$db = new Database();
 
-    if ($result->num_rows == 1) {
-        $row = $result->fetch_assoc();
-        if (password_verify($password, $row['passCode'])) {
-            $_SESSION['registrationOrder'] = $row['registrationOrder'];
-            return true;
-        }
-    }
-    return false;
-}
+// Initialize error message variable
+$error_message = '';
 
-// Function to logout
-function logout() {
-    session_unset();
-    session_destroy();
-    header("Location: index.php");
-}
-
-// Function to check session timeout
-function checkTimeout() {
-    if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 900)) {  // 15 minutes
-        logout();
-    } else {
-        $_SESSION['last_activity'] = time(); // Update last activity time
-    }
-}
-
-// Check if user is already logged in
-if (isset($_SESSION['registrationOrder'])) {
-    checkTimeout();
-    header("Location: game.php");
-    exit(); // Ensure no further code execution
-}
-
-// Check if there's a login attempt
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['login'])) {
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['username']) && isset($_POST['password'])) {
+    // Get username and password from the form
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Authenticate user
-    if (authenticateUser($username, $password, $conn)) {
-        // Authentication successful, start session and redirect to game page
-        $_SESSION['username'] = $username;
-        $_SESSION['last_activity'] = time(); // Set last activity time
-        header("Location: game.php");
-        exit(); // Ensure no further code execution
+    // Attempt to connect to the database management system (DBMS)
+    if ($db->connectToDBMS()) {
+        // Attempt to connect to the specific database
+        if ($db->connectToDB('kidsGames')) {
+            // Prepare SQL query to fetch user data for authentication
+            $sql = "SELECT p.registrationOrder, p.userName, a.passCode 
+                    FROM player p
+                    JOIN authenticator a ON p.registrationOrder = a.registrationOrder
+                    WHERE p.userName=?";
+            
+            // Prepare and execute the statement
+            $stmt = $db->getConnection()->prepare($sql);
+            $stmt->bind_param("s", $username);
+            $stmt->execute();
+            
+            // Get the result
+            $result = $stmt->get_result();
+
+            // Check if a row is returned
+            if ($result->num_rows == 1) {
+                // Fetch the row
+                $row = $result->fetch_assoc();
+                
+                // Verify the password
+                if (password_verify($password, $row['passCode'])) {
+                    // Authentication successful, set session variables
+                    $_SESSION['registrationOrder'] = $row['registrationOrder'];
+                    $_SESSION['username'] = $row['userName'];
+                    
+                    // Redirect to the game page or any other desired page
+                    header("Location: http://localhost/WebServerProject_Winter2024/public/form/Question_1.php");
+                    exit();
+                } else {
+                    // Authentication failed, set error message
+                    $error_message = "Invalid username or password.";
+                }
+            } else {
+                // Authentication failed, set error message
+                $error_message = "Invalid username or password.";
+            }
+        } else {
+            $error_message = "Error connecting to database: " . $db->getLastErrorMessage();
+        }
     } else {
-        // Authentication failed, display error message
-        $error_message = "Sorry, the username or password is incorrect!";
+        $error_message = "Error connecting to database management system.";
     }
 }
 
-// Include your HTML content for the signin form
+// Close database connection
+$db->__destruct();
+
+// Redirect to signin form with error message, if any
+header("Location: http://localhost/WebServerProject_Winter2024/public/form/signin-form.php?error_message=" . urlencode($error_message));
+exit();
 ?>

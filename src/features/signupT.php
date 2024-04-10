@@ -3,6 +3,7 @@ session_start();
 
 // Include the Database class
 require_once '../../db/Database.php';
+include '../../db/Insert.php';
 
 // Create an instance of the Database class
 $db = new Database();
@@ -49,16 +50,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // Hash the password for security
                     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-                    // Insert user data into the database
+                    // Insert user data into the player table
                     $insertQuery = "INSERT INTO player (fName, lName, userName, registrationTime) VALUES ('$firstName', '$lastName', '$username', NOW())";
 
                     // Execute the query
                     try {
                         if ($db->executeOneQuery($insertQuery)) {
-                            // Registration successful
-                            $_SESSION['success_message'] = "Registration successful. You can now login.";
-                            header("Location: http://localhost/WebServerProject_Winter2024/public/form/signin-form.php");
-                            exit();
+                            // Insert password into the authenticator table
+                            $registrationOrder = $db->getLastInsertedRegistrationOrder();
+                            $insertAuthenticatorQuery = "INSERT INTO authenticator (passCode, registrationOrder) VALUES ('$hashedPassword', $registrationOrder)";
+                            if ($db->executeOneQuery($insertAuthenticatorQuery)) {
+                                // Registration successful
+                                $_SESSION['success_message'] = "Registration successful. You can now login.";
+                                header("Location: http://localhost/WebServerProject_Winter2024/public/form/signin-form.php");
+                                exit();
+                            } else {
+                                $error_message = "Error inserting user credentials.";
+                            }
                         } else {
                             $error_message = "Error inserting user.";
                         }

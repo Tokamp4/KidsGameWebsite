@@ -1,7 +1,7 @@
 <?php
 
 class Database {
-    //Properties
+    // Properties
     private $connection, $sqlExec; 
     protected $lastErrMsg, $selectedRows;
 
@@ -11,7 +11,7 @@ class Database {
     }
 
     //Method for customized Messages
-    protected function messages()
+    public function messages()
     {
         //Error messages 
         $m['conDBMS'] = "Connection to MySQL failed!";
@@ -74,19 +74,20 @@ class Database {
     }   
 
     //Method for one SQL Query Execution 
-    public function executeOneQuery($sqlcode)
-    {
-        //Attempt to execute the query
-        $invokeQuery = ($this->connection)->query($sqlcode);
-        //If query execution failed save the system error message  
-        if ($invokeQuery === FALSE) {
-            $this->lastErrMsg = ($this->connection)->error;
-            return FALSE;
-        } else {
-            $this->sqlExec = $invokeQuery;
-            return TRUE;
-        }
-    } 
+   //Method for one SQL Query Execution 
+public function executeOneQuery($sqlcode)
+{
+    //Attempt to execute the query
+    $invokeQuery = ($this->connection)->query($sqlcode);
+    //If query execution failed save the system error message  
+    if ($invokeQuery === FALSE) {
+        $this->lastErrMsg = ($this->connection)->error;
+        return FALSE;
+    } else {
+        return $invokeQuery; // Return the result object
+    }
+}
+
 
     //Method for Selected Data Recording
     public function saveSelectedData(){
@@ -121,4 +122,38 @@ class Database {
          if (($this->connection)->connect_error !== NULL)
              $this->connection->close();
      }
+
+   
+    // Other methods and properties...
+
+    public function numRows($result) {
+        return mysqli_num_rows($result);
+    }
+
+    // Method to fetch the result set as an associative array
+   public function fetchAssoc($result) {
+        return mysqli_fetch_assoc($result);
+    }
+
+// Method to retrieve the last inserted registrationOrder
+public function getLastInsertedRegistrationOrder() {
+    // Query to retrieve the last inserted registrationOrder from the player table
+    $query = "SELECT MAX(registrationOrder) AS registrationOrder FROM player;";
+    
+    // Execute the query
+    $result = $this->executeOneQuery($query);
+
+    // Check if query was successful
+    if ($result !== FALSE && $this->numRows($result) > 0) {
+        $row = $this->fetchAssoc($result);
+        return $row['registrationOrder'];
+    } else {
+        // Handle error if query fails
+        die($this->messages()['error']['getLastInsertedRegistrationOrder']."<br/>".($this->lastErrMsg));
+    }
 }
+
+    // Other methods...
+}
+
+?>

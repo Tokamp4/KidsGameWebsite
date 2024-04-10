@@ -5,6 +5,10 @@ $error_message = isset($_GET['error_message']) ? $_GET['error_message'] : '';
 if (!empty($error_message)) {
     echo "<div class='error-message'></div>";}
 include('../template/footer.php') 
+
+?>
+<!-- Your HTML form code goes here -->
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
