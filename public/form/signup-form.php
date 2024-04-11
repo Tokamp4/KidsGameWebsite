@@ -31,7 +31,6 @@ include('../template/footer.php')
                 <ul>
                     <li><a href="game-form.php">HOME</a></li>  
                     <li><a href="signin-form.php">LOGIN</a></li>
-                    <li><a href="signup-form.php">REGISTER</a></li>
                 </ul>
             </nav>
         </div>
