@@ -122,13 +122,15 @@ include("../../common.php");
         </div>
 
         <div class="row margin-top">
-            <a href="UserMenu.php">
-            <div class="col-lg-4 col-md-6 col-sm-12" id=col-1>
-                <h2 class="text-center">
-                    <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
-                    Logout 
-                </h2>  
-            </div>
+    <a href="../../src/features/signout.php">
+        <div class="col-lg-4 col-md-6 col-sm-12" id="col-1">
+            <h2 class="text-center">
+                <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
+                Logout 
+            </h2>  
+        </div>
+    </a>
+</div>
 
 </body>
 <footer>
