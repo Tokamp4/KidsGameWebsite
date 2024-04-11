@@ -31,11 +31,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             try{
                 $checkQuery = "SELECT registrationOrder FROM player WHERE userName = '$username'";
                 $result = $db->executeOneQuery($checkQuery);
-                if($result){   
-                    $registrationOrder = $result->fetch_assoc()['registrationOrder'];          
+                $registrationOrder = $result->fetch_assoc()['registrationOrder'];          
+                if($registrationOrder){   
                     $password = $db->getConnection()->real_escape_string($password);
                     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                    $updateQuery = "UPDATE authenticator SET password = '$hashedPassword' WHERE registrationOrder = '$registrationOrder'";
+                    $updateQuery = "UPDATE authenticator SET passCode = '$hashedPassword' WHERE registrationOrder = '$registrationOrder'";
                     if($db->executeOneQuery($updateQuery)){
                         //Update Successful
                         $_SESSION['success_message'] = "Password changed successfully! You can now login.";
