@@ -20,9 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     $repeatPassword = $_POST['confirmPassword'];
 
-    // Validate input (You can add more validation if required)
+    // Validate input
     if (empty($firstName) || empty($lastName) || empty($username) || empty($password) || empty($repeatPassword)) {
         $error_message = "All fields are required.";
+    } elseif (!preg_match("/^[a-zA-Z]/", $firstName) || !preg_match("/^[a-zA-Z]/", $lastName) || !preg_match("/^[a-zA-Z]/", $username)) {
+        $error_message = "First Name, Last Name, and Username must begin with a letter of the alphabet.";
+    } elseif (strlen($username) < 8 || strlen($password) < 8) {
+        $error_message = "Username and Password must contain at least 8 characters.";
     } elseif ($password !== $repeatPassword) {
         $error_message = "Passwords do not match.";
     } else {
@@ -90,3 +94,4 @@ $db->__destruct();
 // Redirect to signup form with error message, if any
 header("Location: http://localhost/WebServerProject_Winter2024/public/form/signup-form.php?error_message=" . urlencode($error_message));
 exit();
+?>
