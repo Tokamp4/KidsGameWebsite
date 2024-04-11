@@ -73,8 +73,7 @@ class Database {
         }
     }   
 
-    //Method for one SQL Query Execution 
-   //Method for one SQL Query Execution 
+    //Method for one SQL Query Execution  
 public function executeOneQuery($sqlcode)
 {
     //Attempt to execute the query

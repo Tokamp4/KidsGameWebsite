@@ -21,56 +21,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate input
     if (empty($username) || empty($password)) {
         $error_message = "All fields are required.";
+    } elseif (strlen($password) < 8){
+        $error_message = "The new password must have at least 8 characters!";
     } else {
         // Attempt to connect to the database management system (DBMS)
         if ($db->connectToDBMS()) {
             // Attempt to connect to the specific database
             if ($db->connectToDB('kidsGames')) {
                 // Check if username already exists
-                $checkQuery = "SELECT COUNT(*) AS count FROM player WHERE userName = '$username'";
+                $checkQuery = "SELECT registrationOrder FROM player WHERE userName = '$username'";
                 $result = $db->executeOneQuery($checkQuery);
-
-                if ($result && is_array($result)) {
-                    $count = $result['count'];
-                } else {
-                    $count = 0;
-                }
-
-                if ($count > 0) {
-                    $error_message = "Username already exists. Please choose a different username.";
-                } else {
-                    // Escape user input to prevent SQL injection
-                    $firstName = $db->getConnection()->real_escape_string($firstName);
-                    $lastName = $db->getConnection()->real_escape_string($lastName);
-                    $username = $db->getConnection()->real_escape_string($username);
-                    // Hash the password for security
+               if($result){             
+                    $password = $db->getConnection()->real_escape_string($password);
                     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-                    // Insert user data into the player table
-                    $insertQuery = "INSERT INTO player (fName, lName, userName, registrationTime) VALUES ('$firstName', '$lastName', '$username', NOW())";
-
-                    // Execute the query
-                    try {
-                        if ($db->executeOneQuery($insertQuery)) {
-                            // Insert password into the authenticator table
-                            $registrationOrder = $db->getLastInsertedRegistrationOrder();
-                            $insertAuthenticatorQuery = "INSERT INTO authenticator (passCode, registrationOrder) VALUES ('$hashedPassword', $registrationOrder)";
-                            if ($db->executeOneQuery($insertAuthenticatorQuery)) {
-                                // Registration successful
-                                $_SESSION['success_message'] = "Registration successful. You can now login.";
-                                header("Location: http://localhost/WebServerProject_Winter2024/public/form/signin-form.php");
-                                exit();
-                            } else {
-                                $error_message = "Error inserting user credentials.";
-                            }
-                        } else {
-                            $error_message = "Error inserting user.";
-                        }
-                    } catch (mysqli_sql_exception $e) {
-                        // Handle duplicate entry exception
-                        $error_message = "Username already exists. Please choose a different username.";
-                    }
-                }
+                    $updateQuery = "UPDATE authenticator a SET password = '$hashedPassword' WHERE registrationOrder = '$result'";
+                    if($db->executeOneQuery($updateQuery)){
+                        //Update Successful
+                        $_SESSION['success_message'] = "Password changed successfully! You can now login.";
+                        header("Location: http://localhost/WebServerProject_Winter2024/public/form/pw-update-form.php");
+                        exit();
+                    }else{
+                        $error_message = "Error updating password.";
+                    }       
+               }else{
+                    $error_message = "This username does not exist!";
+               }
             } else {
                 $error_message = "Error connecting to database: " . $db->getLastErrorMessage();
             }
@@ -84,6 +59,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $db->__destruct();
 
 // Redirect to signup form with error message, if any
-header("Location: http://localhost/WebServerProject_Winter2024/public/form/signup-form.php?error_message=" . urlencode($error_message));
+header("Location: http://localhost/WebServerProject_Winter2024/public/form/pw-update-form.php?error_message=" . urlencode($error_message));
 exit();
 ?>
