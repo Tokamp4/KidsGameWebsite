@@ -40,11 +40,11 @@ include('../template/footer.php') ;
                 <div class="wrapper">
                     <form method="POST" action="../../src/features/signinT.php" >
                         <div class="form-group">
-                            <label for="username">Username</label>
+                            <label for="username">Enter your username</label>
                             <input type="text" class="form-control"  id="exampleInputEmail1" placeholder="Username" name="username" >
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
+                            <label for="exampleInputPassword1">Enter new password</label>
                             <input type="password" class="form-control"  id="exampleInputPassword1" placeholder="Password" name="password">
                         </div>
                         <button type="submit" class="btn btn-default" name="login">Submit</button>
@@ -53,14 +53,15 @@ include('../template/footer.php') ;
                 <div id="display-success">
                     <!-- Display any error messages here -->
                     <?php if (isset($error_message)) { echo $error_message; } ?>
-                  <?php
+                    <?php
                     if (isset($_SESSION['success_message'])) {
-                     $success_message = $_SESSION['success_message'];
-                    // Display success message or handle it as needed
-                     echo $success_message;
-                      // Clear the success message from the session
-                     unset($_SESSION['success_message']);
-}?>
+                        $success_message = $_SESSION['success_message'];
+                        // Display success message or handle it as needed
+                        echo $success_message;
+                        // Clear the success message from the session
+                        unset($_SESSION['success_message']);
+                        }
+                    ?>
                 </div>
                 <div class="success">
                 <!--Display error -->
@@ -72,5 +73,4 @@ include('../template/footer.php') ;
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
     <script src="../assets/js/menu.js"></script>
 </body>
-
 </html>
