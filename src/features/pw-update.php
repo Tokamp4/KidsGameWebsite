@@ -28,13 +28,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($db->connectToDBMS()) {
             // Attempt to connect to the specific database
             if ($db->connectToDB('kidsGames')) {
-                // Check if username already exists
+            try{
                 $checkQuery = "SELECT registrationOrder FROM player WHERE userName = '$username'";
                 $result = $db->executeOneQuery($checkQuery);
-               if($result){             
+                if($result){   
+                    $registrationOrder = $result->fetch_assoc()['registrationOrder'];          
                     $password = $db->getConnection()->real_escape_string($password);
                     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                    $updateQuery = "UPDATE authenticator a SET password = '$hashedPassword' WHERE registrationOrder = '$result'";
+                    $updateQuery = "UPDATE authenticator SET password = '$hashedPassword' WHERE registrationOrder = '$registrationOrder'";
                     if($db->executeOneQuery($updateQuery)){
                         //Update Successful
                         $_SESSION['success_message'] = "Password changed successfully! You can now login.";
@@ -43,9 +44,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }else{
                         $error_message = "Error updating password.";
                     }       
-               }else{
-                    $error_message = "This username does not exist!";
-               }
+                }else{
+                        $error_message = "This username does not exist!";
+                }
+            }catch(Exception){
+                $error_message = "Username does not exist my friend!";
+            }
             } else {
                 $error_message = "Error connecting to database: " . $db->getLastErrorMessage();
             }
