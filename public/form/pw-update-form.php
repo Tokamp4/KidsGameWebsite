@@ -38,7 +38,7 @@ include('../template/footer.php') ;
                     <!-- Display any flash messages here -->
                 </div>
                 <div class="wrapper">
-                    <form method="POST" action="../../src/features/signinT.php" >
+                    <form method="POST" action="../../src/features/pw-update.php" >
                         <div class="form-group">
                             <label for="username">Enter your username</label>
                             <input type="text" class="form-control"  id="exampleInputEmail1" placeholder="Username" name="username" >
