@@ -1,3 +1,4 @@
+
 $('#fname').on('keyup', function() {
     var firstName = $(this).val();
     $.ajax({
@@ -9,3 +10,4 @@ $('#fname').on('keyup', function() {
         }
     });
 });
+ 
