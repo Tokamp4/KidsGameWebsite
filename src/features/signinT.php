@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['username']) && isset($
                     $_SESSION['username'] = $row['userName'];
                     
                     // Redirect to the game page or any other desired page
-                    header("Location: http://localhost/WebServerProject_Winter2024/public/form/Question_1.php");
+                    header("Location: http://localhost/WebServerProject_Winter2024/public/form/UserMenu.php");
                     exit();
                 } else {
                     // Authentication failed, set error message
