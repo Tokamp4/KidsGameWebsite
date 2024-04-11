@@ -8,6 +8,7 @@
 </head>
 <body>
     <div class="container">
+        
         <h1>Game History</h1>
         <table>
             <thead>
@@ -24,6 +25,9 @@
                 <?php include( '../../src/features/history.php'); ?>
             </tbody>
         </table>
+        <div class="back-button-container" style="text-align: center; margin-top: 20px;">
+            <a href="javascript:history.back()" class="btn-back">Go Back</a>
+        </div>
     </div>
 </body>
 </html>
