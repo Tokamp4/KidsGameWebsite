@@ -21,7 +21,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php include($_SERVER['DOCUMENT_ROOT'] . '/src/features/history.php'); ?>
+                <?php include( '../../src/features/history.php'); ?>
             </tbody>
         </table>
     </div>

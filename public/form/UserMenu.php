@@ -111,7 +111,7 @@ include("../../common.php");
                 </h2>
             </div>
             </a>
-            <a href="UserMenu.php">
+            <a href="history-form.php">
                 <div class="col-lg-4 col-md-6 col-sm-12 " id=col-3>
                     <h2 class="text-center">
                         <i class="fa fa-history fa-2x" aria-hidden="true"></i>

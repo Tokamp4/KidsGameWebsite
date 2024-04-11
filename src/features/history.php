@@ -1,24 +1,37 @@
 <?php
-require_once 'Database.php';
+require_once '../../db/Database.php';
 
 $database = new Database();
 $db = $database->getConnection();
 
-$query = 'SELECT scoreTime, id, fName, lName, result, livesUsed FROM history';
-$stmt = $db->prepare($query);
-
-if($stmt->execute()) {
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        echo '<tr>';
-        echo '<td>'.htmlspecialchars($row['scoreTime']).'</td>';
-        echo '<td>'.htmlspecialchars($row['id']).'</td>';
-        echo '<td>'.htmlspecialchars($row['fName']).'</td>';
-        echo '<td>'.htmlspecialchars($row['lName']).'</td>';
-        echo '<td>'.htmlspecialchars($row['result']).'</td>';
-        echo '<td>'.htmlspecialchars($row['livesUsed']).'</td>';
-        echo '</tr>';
-    }
-} else {
-    echo "<tr><td colspan='6'>No history found.</td></tr>";
+$db_selected = mysqli_select_db($db, 'kidsGames');
+if (!$db_selected) {
+    die ('Can\'t use the DB : ' . mysqli_error($db));
 }
+
+$query = 'SELECT scoreTime, id, fName, lName, result, livesUsed FROM history';
+$result = mysqli_query($db, $query);
+
+if (!$result) {
+    die('Invalid query: ' . mysqli_error($db));
+}
+
+while ($row = mysqli_fetch_assoc($result)) {
+    echo '<tr>';
+    echo '<td>'.htmlspecialchars($row['scoreTime']).'</td>';
+    echo '<td>'.htmlspecialchars($row['id']).'</td>';
+    echo '<td>'.htmlspecialchars($row['fName']).'</td>';
+    echo '<td>'.htmlspecialchars($row['lName']).'</td>';
+    echo '<td>'.htmlspecialchars($row['result']).'</td>';
+    echo '<td>'.htmlspecialchars($row['livesUsed']).'</td>';
+    echo '</tr>';
+}
+
+echo '            </tbody>';
+echo '        </table>';
+echo '    </div>';
+echo '</body>';
+echo '</html>';
+
+mysqli_close($db);
 ?>
