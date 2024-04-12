@@ -1,10 +1,31 @@
-<!-- PHP -->
+
 <?php
+// Connection to the database
+require_once __DIR__ . '/../../db/Database.php';
+
+// New instance of the Database class and connection to the database
+$db = new Database();
+if (!$db->connectToDB('kidsGames')) {
+    die($db->getLastErrorMessage());
+}
+
 // Initialize the game with 6 lives if necessary.
 session_start();
 if (!isset($_SESSION['lives'])) {
   $_SESSION['lives'] = 6;
 }
+
+// Fetch registrationOrder for the logged-in user in order to be able to insert it into the score table.
+$sql = "SELECT registrationOrder FROM player WHERE id = ?";
+$stmt = $db->prepare($sql);
+$stmt->bind_param("i", $_SESSION['player_id']);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+if ($user === null) {
+    die('No user found with the provided ID.');
+}
+$registrationOrder = $user['registrationOrder'];
 
 // Function to randomize the numbers.
 function shuffleNumbers() {
@@ -21,29 +42,58 @@ function checkAnswer($userNumbers, $shuffledNumbers) {
 
 // Verification if the form was submitted.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // Get the numbers from the player and convert to integers.
-  $userNumbers = array_map('intval', $_POST['numbers']);
+  // Check if the abandon button was clicked
+  if (isset($_POST['abandon'])) {
+    // Define the values for game_status and lives_used
+    $game_status = "incomplet";
+    $lives_used = 6 - $_SESSION['lives'];
 
-  // Get the shuffled numbers.
-  $shuffledNumbers = $_SESSION['shuffledNumbers'];
+    // Insert data into the score table
+    $sql = "INSERT INTO score (livesUsed, scoreTime, result, registrationOrder) VALUES (?, NOW(), ?, ?)";
+    $stmt = $db->prepare($sql);
+    $stmt->bind_param("iss", $lives_used, $game_status, $registrationOrder);
+    $stmt->execute();
 
-  // Verify if the numbers are correct and in order.
-  if (checkAnswer($userNumbers, $shuffledNumbers)) {
-    $message = "Correct – Your numbers have been correctly ordered in descending order.";
+    // Restore lives to 6
+    $_SESSION['lives'] = 6;
 
-    // Next question button.
-    $nextQuestionButton = '<button onclick="location.href=\'Question_5.php\'">Next Question</button>';
-    
+    // Redirect to UserMenu.php
+    header("Location: UserMenu.php");
+    exit;
   } else {
-    $message = "Incorrect – Your numbers were not correctly arranged in descending order.";
-    // Deduct the player's lives if makes mistake.
-    $_SESSION['lives']--;
-    // Verify if the player still has lives.
-    if ($_SESSION['lives'] <= 0) {
-      // Game Over and redefine the lives to 6.
-      $message .= " Game Over!";
-      $tryAgainButton = '<button onclick="location.href=\'Question_1.php\'">Try again</button>';
-      $_SESSION['lives'] = 6;
+    // Get the numbers from the player and convert to integers.
+    $userNumbers = array_map('intval', $_POST['numbers']);
+
+    // Get the shuffled numbers.
+    $shuffledNumbers = $_SESSION['shuffledNumbers'];
+
+    // Verify if the numbers are correct and in order.
+    if (checkAnswer($userNumbers, $shuffledNumbers)) {
+      $message = "Correct – Your numbers have been correctly ordered in descending order.";
+
+      // Next question button.
+      $nextQuestionButton = '<button onclick="location.href=\'Question_5.php\'">Next Question</button>';
+      
+    } else {
+      $message = "Incorrect – Your numbers were not correctly arranged in descending order.";
+      // Deduct the player's lives if makes mistake.
+      $_SESSION['lives']--;
+      // Verify if the player still has lives.
+      if ($_SESSION['lives'] <= 0) {
+        // Game Over and redefine the lives to 6.
+        $message .= " Game Over!";
+        $tryAgainButton = '<button onclick="location.href=\'Question_1.php\'">Try again</button>';
+        $quitButton = '<button onclick="location.href=\'UserMenu.php\'">Quit</button>'; // Add this line
+        $_SESSION['lives'] = 6;
+    
+        // Insert data into the score table
+        $sql = "INSERT INTO score (livesUsed, scoreTime, result, registrationOrder) VALUES (?, NOW(), ?, ?)";
+        $stmt = $db->prepare($sql);
+        $game_status = "échec"; // Set game_status to 'Game Over'
+        $lives_used = 6;
+        $stmt->bind_param("iss", $lives_used, $game_status, $registrationOrder);
+        $stmt->execute();
+      }
     }
   }
 }
@@ -73,6 +123,12 @@ input[type="number"]::-webkit-outer-spin-button {
 <h1>Level 4</h1>
 <h2>Order the numbers in descending order</h2>
 
+<!-- Abandon button -->
+<?php if (!isset($tryAgainButton)) : ?>
+<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+  <button type="submit" name="abandon">Abandon</button>
+</form>
+<?php endif; ?>
 
 <?php if (!isset($tryAgainButton) && !isset($nextQuestionButton)) : ?>
 <h4>Shuffled Numbers:
@@ -100,9 +156,10 @@ foreach ($shuffledNumbers as $number) {
   <p><?php echo $message; ?></p>
 <?php endif; ?>
 
-<!-- Display the buttons "Next Question" and "Try Again" in each situation. -->
+<!-- Display the buttons "Next Question", "Try Again" and "Quit" in each situation. -->
 <?php if (isset($nextQuestionButton)) echo $nextQuestionButton; ?>
 <?php if (isset($tryAgainButton)) echo $tryAgainButton; ?>
+<?php if (isset($quitButton)) echo $quitButton; ?>
 
 <br><br> 
 
