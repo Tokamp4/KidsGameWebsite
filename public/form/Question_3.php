@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Check if the abandon button was clicked
   if (isset($_POST['abandon'])) {
     // Define the values for game_status and lives_used
-    $game_status = "incomplet";
+    $game_status = "incomplete";
     $lives_used = 6 - $_SESSION['lives'];
 
     // Insert data into the score table
@@ -73,14 +73,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
       // Next question button.
       $nextQuestionButton = '<button onclick="location.href=\'Question_4.php\'">Next Question</button>';
-
-      // // Insert data into the score table
-      // $sql = "INSERT INTO score (livesUsed, scoreTime, result, registrationOrder) VALUES (?, NOW(), ?, ?)";
-      // $stmt = $db->prepare($sql);
-      // $game_status = "réussite";
-      // $lives_used = 6 - $_SESSION['lives'];
-      // $stmt->bind_param("iss", $lives_used, $game_status, $registrationOrder);
-      // $stmt->execute();
       
     } else {
       $message = "Incorrect – Your numbers were not correctly arranged in ascending order.";
@@ -97,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Insert data into the score table
         $sql = "INSERT INTO score (livesUsed, scoreTime, result, registrationOrder) VALUES (?, NOW(), ?, ?)";
         $stmt = $db->prepare($sql);
-        $game_status = "échec"; // Set game_status to 'Game Over'
+        $game_status = "gameover"; // Set game_status to 'Game Over'
         $lives_used = 6;
         $stmt->bind_param("iss", $lives_used, $game_status, $registrationOrder);
         $stmt->execute();
