@@ -133,6 +133,12 @@ input[type="number"]::-webkit-outer-spin-button {
 
 </style>
 
+<!-- Abandon button -->
+<?php if (!isset($tryAgainButton)) : ?>
+<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+  <button type="submit" name="abandon">Abandon</button>
+</form>
+<?php endif; ?>
 
 <?php if (!isset($tryAgainButton) && !isset($endGameButton)) : ?>
 <h4>Shuffled Numbers:
