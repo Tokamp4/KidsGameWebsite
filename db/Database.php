@@ -47,11 +47,11 @@ class Database {
     //Method for DB Connection 
     public function connectToDB($dbname)
     {
-        //Attempt to connect to MySQL using MySQLi
+        //Attempt to select the database
         $con = mysqli_select_db($this->connection, $dbname);
-        //If connection to the Database failed save the system error message 
+        //If selection of the Database failed save a custom error message 
         if ($con === FALSE) {
-            $this->lastErrMsg = $this->connection->error;
+            $this->lastErrMsg = "Failed to select database: $dbname";
             return FALSE;
         } else {
             return TRUE;
@@ -73,20 +73,19 @@ class Database {
         }
     }   
 
-    //Method for one SQL Query Execution  
-public function executeOneQuery($sqlcode)
-{
-    //Attempt to execute the query
-    $invokeQuery = ($this->connection)->query($sqlcode);
-    //If query execution failed save the system error message  
-    if ($invokeQuery === FALSE) {
-        $this->lastErrMsg = ($this->connection)->error;
-        return FALSE;
-    } else {
-        return $invokeQuery; // Return the result object
+    //Method for one SQL Query Execution 
+    public function executeOneQuery($sqlcode)
+    {
+        //Attempt to execute the query
+        $invokeQuery = ($this->connection)->query($sqlcode);
+        //If query execution failed save the system error message  
+        if ($invokeQuery === FALSE) {
+            $this->lastErrMsg = ($this->connection)->error;
+            return FALSE;
+        } else {
+            return $invokeQuery; // Return the result object
+        }
     }
-}
-
 
     //Method for Selected Data Recording
     public function saveSelectedData(){
@@ -118,11 +117,10 @@ public function executeOneQuery($sqlcode)
      public function __destruct()
      {
          //Close automatically the DBMS connection           
-         if (($this->connection)->connect_error !== NULL)
+         if ($this->connection !== NULL)
              $this->connection->close();
      }
 
-   
     // Other methods and properties...
 
     public function numRows($result) {
@@ -130,29 +128,37 @@ public function executeOneQuery($sqlcode)
     }
 
     // Method to fetch the result set as an associative array
-   public function fetchAssoc($result) {
+    public function fetchAssoc($result) {
         return mysqli_fetch_assoc($result);
     }
 
-// Method to retrieve the last inserted registrationOrder
-public function getLastInsertedRegistrationOrder() {
-    // Query to retrieve the last inserted registrationOrder from the player table
-    $query = "SELECT MAX(registrationOrder) AS registrationOrder FROM player;";
-    
-    // Execute the query
-    $result = $this->executeOneQuery($query);
+    // Method to retrieve the last inserted registrationOrder
+    public function getLastInsertedRegistrationOrder() {
+        // Query to retrieve the last inserted registrationOrder from the player table
+        $query = "SELECT MAX(registrationOrder) AS registrationOrder FROM player;";
+        
+        // Execute the query
+        $result = $this->executeOneQuery($query);
 
-    // Check if query was successful
-    if ($result !== FALSE && $this->numRows($result) > 0) {
-        $row = $this->fetchAssoc($result);
-        return $row['registrationOrder'];
-    } else {
-        // Handle error if query fails
-        die($this->messages()['error']['getLastInsertedRegistrationOrder']."<br/>".($this->lastErrMsg));
+        // Check if query was successful
+        if ($result !== FALSE && $this->numRows($result) > 0) {
+            $row = $this->fetchAssoc($result);
+            return $row['registrationOrder'];
+        } else {
+            // Handle error if query fails
+            die($this->messages()['error']['getLastInsertedRegistrationOrder']."<br/>".($this->lastErrMsg));
+        }
     }
-}
 
     // Other methods...
+
+    public function prepare($sql) {
+        $stmt = $this->connection->prepare($sql);
+        if ($stmt === false) {
+            $this->lastErrMsg = $this->connection->error;
+        }
+        return $stmt;
+    }
 }
 
 ?>

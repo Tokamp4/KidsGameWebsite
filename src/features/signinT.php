@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['username']) && isset($
         // Attempt to connect to the specific database
         if ($db->connectToDB('kidsGames')) {
             // Prepare SQL query to fetch user data for authentication
-            $sql = "SELECT p.registrationOrder, p.userName, a.passCode 
+            $sql = "SELECT p.id, a.registrationOrder, p.userName, a.passCode 
                     FROM player p
                     JOIN authenticator a ON p.registrationOrder = a.registrationOrder
                     WHERE p.userName=?";
@@ -42,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['username']) && isset($
                 // Verify the password
                 if (password_verify($password, $row['passCode'])) {
                     // Authentication successful, set session variables
+                    $_SESSION['player_id'] = $row['id'];
                     $_SESSION['registrationOrder'] = $row['registrationOrder'];
                     $_SESSION['username'] = $row['userName'];
                     
