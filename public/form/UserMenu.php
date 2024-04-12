@@ -103,7 +103,11 @@ include("../../common.php");
                 </h2>  
             </div>
             </a>
+<<<<<<< HEAD
             <a href="pw-update-form.php">
+=======
+            <a href="../../php">
+>>>>>>> 436f169231c138752a19e08d7ea6066f1f13971b
             <div class="col-lg-4 col-md-6 col-sm-12" id=col-2>
                 <h2 class="text-center">
                     <i class="fa fa-database fa-2x" aria-hidden="true"></i>
