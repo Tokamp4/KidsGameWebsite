@@ -1,11 +1,12 @@
-$('#uname').on('keyup', function() {
-    var username = $(this).val();
+$('#lname').on('keyup', function() {
+    var lastName = $(this).val();
     $.ajax({
         type: 'POST',
         url: 'signup.php',
-        data: { field: 'uname', value: username },
+        data: { field: 'lname', value: lastName },
         success: function(response) {
-            $('#unameError').text(response);
+            $('#lnameError').text(response);
         }
     });
 });
+ 

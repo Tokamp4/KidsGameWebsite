@@ -20,7 +20,7 @@ include('../template/footer.php')
 <body>
     <?php generateIndexHeader2(); ?>
     <div class="container text-center">
-            <h1>QUIZZ GAME</h1>
+            <h1>Quizz Game</h1>
         </div>
 
         <div class="container pading-top">

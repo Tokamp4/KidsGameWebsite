@@ -64,6 +64,7 @@ include('../template/footer.php') ;
                         </div>
                         <button type="submit" class="btn btn-default" name="login">Submit</button>
                     </form>
+                    <h5><a href="pw-update-form.php">Forgot your password? Click here to reset it.</a></h5>
                 </div>
                 <div id="display-success">
                     <!-- Display any error messages here -->

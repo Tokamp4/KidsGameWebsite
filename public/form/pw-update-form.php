@@ -38,7 +38,7 @@ include('../template/footer.php') ;
                     <!-- Display any flash messages here -->
                 </div>
                 <div class="wrapper">
-                    <form method="POST" action="../../src/features/signinT.php" >
+                    <form method="POST" action="../../src/features/pw-update.php" >
                         <div class="form-group">
                             <label for="username">Enter your username</label>
                             <input type="text" class="form-control"  id="exampleInputEmail1" placeholder="Username" name="username" >
@@ -52,16 +52,17 @@ include('../template/footer.php') ;
                 </div>
                 <div id="display-success">
                     <!-- Display any error messages here -->
-                    <?php if (isset($error_message)) { echo $error_message; } ?>
-                    <?php
-                    if (isset($_SESSION['success_message'])) {
-                        $success_message = $_SESSION['success_message'];
-                        // Display success message or handle it as needed
-                        echo $success_message;
-                        // Clear the success message from the session
-                        unset($_SESSION['success_message']);
+                    <?php if (isset($error_message)) { echo $error_message; }
+                        if (isset($_SESSION['success_message'])) {
+                            $success_message = $_SESSION['success_message'];
+                            // Display success message or handle it as needed
+                            echo $success_message;
+                            // Clear the success message from the session
+                            unset($_SESSION['success_message']);
+                            echo "<a href='signin-form.php'>Go for login</a>";
                         }
                     ?>
+                    
                 </div>
                 <div class="success">
                 <!--Display error -->

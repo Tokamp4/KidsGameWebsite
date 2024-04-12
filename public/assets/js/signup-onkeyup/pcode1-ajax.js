@@ -3,8 +3,8 @@ $('#pcode1').on('keyup', function() {
     $.ajax({
         type: 'POST',
         url: 'signup.php',
-        data: { 
-            field: 'pcode1', 
+        data: {
+            field: 'pcode1',
             value: password
         },
         success: function(response) {
