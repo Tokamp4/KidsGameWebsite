@@ -45,6 +45,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['username']) && isset($
                     $_SESSION['player_id'] = $row['id'];
                     $_SESSION['registrationOrder'] = $row['registrationOrder'];
                     $_SESSION['username'] = $row['userName'];
+                    $_SESSION['last_activity'] = time(); // Set last activity time
+
                     
                     // Redirect to the game page or any other desired page
                     header("Location: http://localhost/WebServerProject_Winter2024/public/form/UserMenu.php");
@@ -63,6 +65,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['username']) && isset($
     } else {
         $error_message = "Error connecting to database management system.";
     }
+}
+
+// Check for timeout
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 900)) { // 900 seconds = 15 minutes
+    session_unset();
+    session_destroy();
+    header("Location: http://localhost/WebServerProject_Winter2024/public/form/signin-form.php");
+    exit();
 }
 
 // Close database connection
