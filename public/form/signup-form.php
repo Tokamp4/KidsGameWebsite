@@ -64,7 +64,7 @@ include('../template/footer.php')
                         <div class="form-group">
                             <label for="username">Username</label>
                             <input type="text" class="form-control" id="username" placeholder="Username" name="username"
-                            required onkeyup="validateUsername()">
+                            required onkeyup="validateUserName()">
                             <p><span id=usernameHint></span></p>
                         </div>
                         <div class="form-group">

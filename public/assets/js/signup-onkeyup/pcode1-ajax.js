@@ -9,7 +9,7 @@ function validatePcode1() {
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/PHPGames-main/src/signup-onkeyup/pcode1-ajax.php", true);
+    xhr.open("POST", "/WebServerProject_Winter2024/src/signup-onkeyup/pcode1-ajax.php", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.onreadystatechange = function() {
         if (this.readyState == 4) {

@@ -9,7 +9,7 @@ function validateUserName() {
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/PHPGames-main/src/signup-onkeyup/uname-ajax.php", true); // Fill in the correct path
+    xhr.open("POST", "/WebServerProject_Winter2024/src/signup-onkeyup/uname-ajax.php", true); // Fill in the correct path
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.onreadystatechange = function() {
         if (this.readyState == 4) {

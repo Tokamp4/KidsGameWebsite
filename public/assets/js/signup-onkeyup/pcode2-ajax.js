@@ -1,4 +1,4 @@
-function validatePCode2() {
+function validatePcode2() {
     var password = document.getElementById("password").value;
     var confirmPassword = document.getElementById("confirmPassword").value;
     var messageBox = document.getElementById("pcode2Hint");
@@ -10,7 +10,7 @@ function validatePCode2() {
     }
     
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/PHPGames-main/src/signup-onkeyup/pcode2-ajax.php", true);
+    xhr.open("POST", "/WebServerProject_Winter2024/src/signup-onkeyup/pcode2-ajax.php", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.onreadystatechange = function() {
         if (this.readyState == 4) {
