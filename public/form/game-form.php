@@ -36,14 +36,10 @@ include('../template/footer.php')
                     </h2>
                     Fully Supporting Database
                 </div>
-                <a href="quiz_user.php">
                     <div class="col-lg-4 col-md-6 col-sm-12 " id=col-3>
                         <h2 class="text-center"><i class="fa fa-gamepad fa-2x" aria-hidden="true"></i></h2>
                         Enjoy An Entertaining Quizz Moment 
                     </div>
-                </a>
-                
-              
             </div>
         </div>
 
